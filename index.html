@@ -11,7 +11,7 @@
 </head>
 
 <body
-    class="min-h-screen lg:h-screen w-full flex flex-col p-4 md:p-8 relative selection:bg-purple-900 selection:text-white">
+    class="min-h-screen w-full flex flex-col p-4 md:p-8 relative selection:bg-purple-900 selection:text-white overflow-x-hidden lg:overflow-hidden">
 
     <!-- Dust Particles -->
     <div id="dust-container" class="dust-container"></div>
@@ -66,11 +66,11 @@
 
     <!-- Main Container -->
     <div
-        class="flex-1 flex flex-col lg:flex-row gap-4 lg:gap-6 z-10 max-w-7xl mx-auto w-full h-auto lg:h-full lg:overflow-hidden overflow-visible pb-2 lg:pb-4">
+        class="flex-1 flex flex-col lg:flex-row gap-4 lg:gap-6 z-10 max-w-7xl mx-auto w-full h-auto lg:h-full overflow-visible pb-2 lg:pb-4">
 
         <!-- LEFT: Controls & Spells -->
         <div
-            class="lg:w-1/3 flex flex-col gap-4 lg:gap-6 h-auto lg:h-full lg:overflow-y-auto pr-0 lg:pr-2 tablet-scroll-area shrink-0">
+            class="lg:w-1/3 flex flex-col gap-4 lg:gap-6 h-auto lg:h-full lg:overflow-y-auto pr-0 lg:pr-2 tablet-scroll-area shrink-0 pb-20 lg:pb-0">
 
             <!-- Header & Master Control -->
             <div class="ancient-border p-4 sm:p-6 rounded-sm relative group shrink-0">
@@ -94,7 +94,6 @@
                     <button id="btn-clear"
                         class="px-4 sm:px-5 border border-red-900/50 text-red-400 hover:bg-red-900/20 active:bg-red-900/40 transition-all active:scale-95 hover:text-red-200 shadow-[0_0_10px_rgba(0,0,0,0.5)]"
                         title="Clear All Runes">
-                        ✕
                     </button>
                 </div>
 
@@ -147,7 +146,7 @@
         </div>
 
         <!-- RIGHT: Visualizer & Grid -->
-        <div class="lg:w-2/3 flex flex-col gap-4 lg:gap-6 h-auto lg:h-full lg:overflow-hidden shrink-0">
+        <div class="lg:w-2/3 flex flex-col gap-4 lg:gap-6 h-auto lg:h-full overflow-visible shrink-0 p-4">
 
             <!-- Scrying Pool (Visualizer) -->
             <!-- Adaptive height: smaller on mobile -->
@@ -172,11 +171,10 @@
                         C MINOR DORIAN</div>
                 </div>
 
-                <!-- Scrollable Wrapper for Grid -->
                 <div class="overflow-y-auto overflow-x-auto tablet-scroll-area relative z-10 flex-1">
                     <!-- Added min-w for horizontal scrolling on mobile -->
                     <div id="sequencer-grid"
-                        class="grid grid-cols-[minmax(70px,90px)_repeat(16,minmax(24px,1fr))] grid-rows-8 gap-1 min-h-[250px] sm:min-h-[320px] min-w-[600px] lg:min-w-0 select-none pb-2">
+                        class="grid grid-cols-[minmax(70px,90px)_repeat(16,minmax(24px,1fr))] grid-rows-8 gap-1 min-h-[250px] sm:min-h-[320px] min-w-[600px] lg:min-w-0 select-none pb-2 p-12">
                         <!-- JS Injects Runes Here -->
                     </div>
                 </div>
@@ -186,11 +184,10 @@
 
     <script src="js/poweraudio.js"></script>
     <script>
+
         // --- INLINED APP.JS LOGIC WITH REORDERED GLOBALS ---
 
-        // ======================================
         // 1. GLOBAL STATE DEFINITIONS
-        // ======================================
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let ctx, masterBus, reverbNode, compressor, delayNode, delayFeedback, distortionNode, droneOsc, droneGain, windGain;
         let isPlaying = false;
@@ -223,9 +220,7 @@
         const btnClear = document.getElementById('btn-clear');
         const vizContainer = document.getElementById('viz-container');
 
-        // ======================================
         // 2. HELPER CLASSES
-        // ======================================
         class Particle {
             constructor(x, y, type, color) {
                 this.x = x;
@@ -336,9 +331,7 @@
         const fantasyChar = new AudioCharacter();
         window.fantasyChar = fantasyChar;
 
-        // ======================================
         // 3. UI FUNCTIONS
-        // ======================================
         function toggleHelp(show) {
             if (show) {
                 helpModal.classList.remove('pointer-events-none', 'opacity-0');
@@ -410,9 +403,7 @@
             }
         }
 
-        // ======================================
         // 4. AUDIO ENGINE
-        // ======================================
         function makeDistortionCurve(amount) {
             const k = typeof amount === 'number' ? amount : 50, n_samples = 44100, curve = new Float32Array(n_samples), deg = Math.PI / 180;
             for (let i = 0; i < n_samples; ++i) {
@@ -549,9 +540,7 @@
             } else { console.error("PowerAudio library not found!"); }
         }
 
-        // ======================================
         // 5. MAIN LOOP
-        // ======================================
         function fxLoop() {
             fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
             // Parallax
@@ -562,12 +551,8 @@
                 const centerY = rect.height / 2;
                 const relX = mouse.x - rect.left - centerX;
                 const relY = mouse.y - rect.top - centerY;
-                // runeCenter element seems specific to old implementation?
-                // Let's check update loop logic - it accesses analyser and dataArray
             }
 
-            // Re-added Character Logic
-            // It now roams so needs canvas dimensions
             fantasyChar.update(fxCanvas.width, fxCanvas.height);
             fantasyChar.draw(fxCtx);
 
@@ -579,9 +564,7 @@
             requestAnimationFrame(fxLoop);
         }
 
-        // ======================================
         // 6. INITIALIZATION & LISTENERS
-        // ======================================
 
         // Start Dust
         // (Moved to top level check)

@@ -13,7 +13,6 @@ body {
     background-color: var(--void-dark);
     color: #d4c5a9;
     font-family: 'MedievalSharp', cursive;
-    overflow: hidden;
     background: linear-gradient(125deg, #0f0c29, #302b63, #24243e, #000000);
     background-size: 400% 400%;
     animation: aurora 15s ease infinite;
