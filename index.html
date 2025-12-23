@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmonix</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body
+    class="min-h-screen lg:h-screen w-full flex flex-col p-4 md:p-8 relative selection:bg-purple-900 selection:text-white">
+
+    <!-- Dust Particles -->
+    <div id="dust-container" class="dust-container"></div>
+
+    <!-- FX Canvas Layer -->
+    <!-- (Added via JS) -->
+
+    <!-- HELP MODAL -->
+    <div id="help-modal"
+        class="fixed inset-0 z-[100] modal-bg flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="ancient-border bg-[#1a1624] p-8 max-w-lg w-full relative rounded-sm text-center transform scale-95 transition-transform duration-300"
+            id="help-content">
+            <button id="close-help" class="absolute top-2 right-4 text-2xl text-red-400 hover:text-red-200">×</button>
+            <h2 class="text-3xl text-yellow-100 font-[Cinzel] mb-4">The Grimoire</h2>
+            <div class="text-left space-y-4 text-yellow-100/80 text-sm font-serif">
+                <p><strong class="text-yellow-500">How to Create Sound:</strong><br>
+                    The <strong>Rune Tablet</strong> (bottom right) is your musical score. Click runes to activate them.
+                </p>
+
+                <p><strong class="text-blue-400">Horizontal (Time):</strong><br>
+                    Time flows from left to right. There are 16 steps in a loop.</p>
+
+                <p><strong class="text-purple-400">Vertical (Pitch/Instrument):</strong><br>
+                    • <strong>Top Rows (Aether/Wind):</strong> High pitched melodies.<br>
+                    • <strong>Middle Rows (Fire):</strong> Bass and lower notes.<br>
+                    • <strong>Bottom Rows (Snap/Thunder):</strong> Drums.</p>
+
+                <p class="text-xs italic text-center mt-6 text-gray-500">"Combine Thunder with Aether to shake the
+                    heavens."</p>
+            </div>
+            <button id="close-help-btn"
+                class="mt-6 border border-yellow-700 text-yellow-500 px-6 py-2 hover:bg-yellow-900/30 font-[Cinzel]">I
+                Understand</button>
+        </div>
+    </div>
+
+    <!-- Start Overlay -->
+    <div id="start-overlay"
+        class="absolute inset-0 z-[60] bg-[#050308] flex flex-col items-center justify-center cursor-pointer transition-opacity duration-1000 px-4">
+        <div class="relative group text-center">
+            <div
+                class="absolute -inset-8 bg-gradient-to-r from-purple-600 to-yellow-600 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-1000 rounded-full animate-pulse">
+            </div>
+            <h1
+                class="text-4xl sm:text-5xl md:text-7xl font-black title-text mb-4 relative z-10 tracking-widest drop-shadow-[0_0_15px_rgba(255,215,0,0.3)] break-words">
+                HARMONIX</h1>
+        </div>
+        <p
+            class="text-sm sm:text-xl text-yellow-600/80 font-[Cinzel] tracking-[0.3em] sm:tracking-[0.5em] mt-8 border-t border-b border-yellow-900/30 py-2 animate-pulse text-center">
+            TOUCH TO AWAKEN</p>
+    </div>
+
+    <!-- Main Container -->
+    <div
+        class="flex-1 flex flex-col lg:flex-row gap-4 lg:gap-6 z-10 max-w-7xl mx-auto w-full h-auto lg:h-full lg:overflow-hidden overflow-visible pb-2 lg:pb-4">
+
+        <!-- LEFT: Controls & Spells -->
+        <div
+            class="lg:w-1/3 flex flex-col gap-4 lg:gap-6 h-auto lg:h-full lg:overflow-y-auto pr-0 lg:pr-2 tablet-scroll-area shrink-0">
+
+            <!-- Header & Master Control -->
+            <div class="ancient-border p-4 sm:p-6 rounded-sm relative group shrink-0">
+                <!-- Help Button -->
+                <button id="open-help"
+                    class="absolute top-4 right-4 text-yellow-800 hover:text-yellow-400 border border-yellow-900/50 rounded-full w-6 h-6 flex items-center justify-center text-xs font-serif shadow-lg bg-black/50"
+                    title="Open Grimoire">?</button>
+
+                <div class="flex justify-between items-center mb-6 pr-8">
+                    <h2 class="text-xl sm:text-2xl text-yellow-100 font-[Cinzel] drop-shadow-lg">Rune Sequencer</h2>
+                    <div id="bpm-display"
+                        class="text-yellow-500 font-bold font-mono text-sm sm:text-lg border border-yellow-900/50 px-3 py-1 bg-black/50 shadow-[0_0_15px_rgba(255,183,0,0.1)] backdrop-blur-sm">
+                        110 BPM</div>
+                </div>
+
+                <div class="flex gap-4 mb-8">
+                    <button id="btn-play"
+                        class="flex-1 bg-yellow-900/20 border border-yellow-700/50 hover:bg-yellow-700/40 text-yellow-100 py-3 sm:py-4 font-[Cinzel] font-bold tracking-widest transition-all active:scale-95 shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(255,165,0,0.2)] text-sm sm:text-base">
+                        AWAKEN
+                    </button>
+                    <button id="btn-clear"
+                        class="px-4 sm:px-5 border border-red-900/50 text-red-400 hover:bg-red-900/20 active:bg-red-900/40 transition-all active:scale-95 hover:text-red-200 shadow-[0_0_10px_rgba(0,0,0,0.5)]"
+                        title="Clear All Runes">
+                        ✕
+                    </button>
+                </div>
+
+                <!-- Sliders -->
+                <div class="space-y-6 sm:space-y-8">
+                    <div>
+                        <div
+                            class="flex justify-between text-[10px] sm:text-xs text-yellow-600 mb-2 font-[Cinzel] tracking-widest">
+                            <span>FLOW OF TIME</span>
+                            <span>TEMPO</span>
+                        </div>
+                        <input type="range" id="tempo-slider" min="60" max="180" value="110" class="w-full">
+                    </div>
+                    <div>
+                        <div
+                            class="flex justify-between text-[10px] sm:text-xs text-blue-400 mb-2 font-[Cinzel] tracking-widest">
+                            <span>ASTRAL HARMONY</span>
+                            <span>PITCH</span>
+                        </div>
+                        <input type="range" id="pitch-slider" min="-1200" max="1200" value="0" class="w-full">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spellbook (DJ Effects) -->
+            <div class="ancient-border p-4 sm:p-6 rounded-sm flex-col shrink-0">
+                <h3
+                    class="text-lg sm:text-xl text-yellow-100 font-[Cinzel] mb-4 sm:mb-6 text-center drop-shadow-[0_0_5px_rgba(255,255,255,0.2)]">
+                    Incantations</h3>
+
+                <div class="grid grid-cols-2 gap-3 sm:gap-4">
+                    <button id="fx-verb"
+                        class="h-16 sm:h-20 border border-purple-900/50 bg-gradient-to-b from-purple-900/10 to-transparent hover:from-purple-900/30 hover:border-purple-500 text-purple-300 font-[Cinzel] text-xs sm:text-sm transition-all shadow-[0_0_15px_rgba(147,51,234,0.05)] active:scale-95 hover:shadow-[0_0_20px_rgba(147,51,234,0.2)] bg-purple-900/50 text-white shadow-[0_0_20px_purple]">
+                        CAVERN<br><span class="text-[10px] sm:text-xs opacity-50 tracking-widest">REVERB</span>
+                    </button>
+                    <button id="fx-filter"
+                        class="h-16 sm:h-20 border border-blue-900/50 bg-gradient-to-b from-blue-900/10 to-transparent hover:from-blue-900/30 hover:border-blue-500 text-blue-300 font-[Cinzel] text-xs sm:text-sm transition-all shadow-[0_0_15px_rgba(59,130,246,0.05)] active:scale-95 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]">
+                        MUFFLE<br><span class="text-[10px] sm:text-xs opacity-50 tracking-widest">FILTER</span>
+                    </button>
+                    <button id="fx-delay"
+                        class="h-16 sm:h-20 border border-teal-900/50 bg-gradient-to-b from-teal-900/10 to-transparent hover:from-teal-900/30 hover:border-teal-500 text-teal-300 font-[Cinzel] text-xs sm:text-sm transition-all shadow-[0_0_15px_rgba(20,184,166,0.05)] active:scale-95 hover:shadow-[0_0_20px_rgba(20,184,166,0.2)]">
+                        CHRONO<br><span class="text-[10px] sm:text-xs opacity-50 tracking-widest">ECHO</span>
+                    </button>
+                    <button id="fx-dist"
+                        class="h-16 sm:h-20 border border-red-900/50 bg-gradient-to-b from-red-900/10 to-transparent hover:from-red-900/30 hover:border-red-500 text-red-300 font-[Cinzel] text-xs sm:text-sm transition-all shadow-[0_0_15px_rgba(239,68,68,0.05)] active:scale-95 hover:shadow-[0_0_20px_rgba(239,68,68,0.2)]">
+                        STATIC<br><span class="text-[10px] sm:text-xs opacity-50 tracking-widest">HEX</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: Visualizer & Grid -->
+        <div class="lg:w-2/3 flex flex-col gap-4 lg:gap-6 h-auto lg:h-full lg:overflow-hidden shrink-0">
+
+            <!-- Scrying Pool (Visualizer) -->
+            <!-- Adaptive height: smaller on mobile -->
+            <div
+                class="relative ancient-border rounded-full md:rounded-lg overflow-hidden orb-glow min-h-[250px] sm:min-h-[300px] md:min-h-[350px] shrink-0 group cursor-none">
+                <div id="viz-container" class="absolute inset-0 w-full h-full z-0 opacity-60"></div>
+
+
+            </div>
+
+            <!-- The Grid (Stone Tablet) -->
+            <div class="ancient-border p-4 sm:p-6 rounded-sm relative flex flex-col flex-1 min-h-0">
+                <div
+                    class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] pointer-events-none">
+                </div>
+
+                <div class="flex justify-between items-end mb-4 px-2 relative z-10 shrink-0">
+                    <h3 class="text-base sm:text-lg text-yellow-500 font-[Cinzel] tracking-widest drop-shadow-md">RUNE
+                        TABLET</h3>
+                    <div
+                        class="text-[10px] sm:text-xs text-gray-500 font-mono border border-gray-800 px-2 py-0.5 rounded bg-black/40">
+                        C MINOR DORIAN</div>
+                </div>
+
+                <!-- Scrollable Wrapper for Grid -->
+                <div class="overflow-y-auto overflow-x-auto tablet-scroll-area relative z-10 flex-1">
+                    <!-- Added min-w for horizontal scrolling on mobile -->
+                    <div id="sequencer-grid"
+                        class="grid grid-cols-[minmax(70px,90px)_repeat(16,minmax(24px,1fr))] grid-rows-8 gap-1 min-h-[250px] sm:min-h-[320px] min-w-[600px] lg:min-w-0 select-none pb-2">
+                        <!-- JS Injects Runes Here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/poweraudio.js"></script>
+    <script>
+        // --- INLINED APP.JS LOGIC WITH REORDERED GLOBALS ---
+
+        // ======================================
+        // 1. GLOBAL STATE DEFINITIONS
+        // ======================================
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let ctx, masterBus, reverbNode, compressor, delayNode, delayFeedback, distortionNode, droneOsc, droneGain, windGain;
+        let isPlaying = false;
+        let tempo = 110;
+        let currentStep = 0;
+        let nextNoteTime = 0.0;
+        let scheduleAheadTime = 0.1;
+        let timerID;
+        let isReverbOn = true, isFilterOn = false, isDelayOn = false, isDistortionOn = false;
+        const NUM_ROWS = 8;
+        let grid = Array(NUM_ROWS).fill().map(() => Array(16).fill(false));
+        const noteFreqs = [523.25, 466.16, 392.00, 349.23, 311.13, 261.63];
+        let globalDetune = 0;
+        let analyser = null;
+        let dataArray = null;
+
+        // FX & Visuals State
+        let particles = [];
+        let mouse = { x: -100, y: -100 };
+
+        // DOM Elements
+        const helpModal = document.getElementById('help-modal');
+        const helpContent = document.getElementById('help-content');
+        const openHelp = document.getElementById('open-help');
+        const closeHelp = document.getElementById('close-help');
+        const closeHelpBtn = document.getElementById('close-help-btn');
+        const dustContainer = document.getElementById('dust-container');
+        const startOverlay = document.getElementById('start-overlay');
+        const btnPlay = document.getElementById('btn-play');
+        const btnClear = document.getElementById('btn-clear');
+        const vizContainer = document.getElementById('viz-container');
+
+        // ======================================
+        // 2. HELPER CLASSES
+        // ======================================
+        class Particle {
+            constructor(x, y, type, color) {
+                this.x = x;
+                this.y = y;
+                this.type = type;
+                if (color) {
+                    this.color = color;
+                } else {
+                    const hue = Math.random() > 0.5 ? 180 : 270;
+                    this.color = type === 'trail' ? `hsla(${hue + Math.random() * 40}, 100%, 70%, 1)` : '#ffd700';
+                }
+                const angle = Math.random() * Math.PI * 2;
+                const speed = type === 'spark' ? Math.random() * 5 + 2 : Math.random() * 0.8;
+                this.vx = Math.cos(angle) * speed;
+                this.vy = Math.sin(angle) * speed;
+                this.life = 1.0;
+                this.decay = type === 'spark' ? Math.random() * 0.03 + 0.02 : 0.015;
+                this.size = type === 'spark' ? Math.random() * 3 + 1 : Math.random() * 4 + 2;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life -= this.decay;
+                if (this.type === 'trail') {
+                    this.vy -= 0.03;
+                    this.vx += (Math.random() - 0.5) * 0.1;
+                    this.size *= 0.96;
+                }
+            }
+            draw(ctx) {
+                ctx.save();
+                ctx.globalAlpha = this.life;
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = this.type === 'spark' ? 15 : 5;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        class AudioCharacter {
+            constructor() {
+                // Procedural Spirit - No Image Loading
+                this.x = window.innerWidth / 2;
+                this.y = window.innerHeight / 2;
+                this.vx = (Math.random() - 0.5) * 4;
+                this.vy = (Math.random() - 0.5) * 4;
+
+                this.pluseTimer = 0;
+                this.hue = 200; // Cyan/Blue base
+                this.loaded = true; // Always true for procedural
+            }
+
+            update(canvasWidth, canvasHeight) {
+                // Move
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce off walls with margin
+                if (this.x < 50 || this.x > canvasWidth - 50) this.vx *= -1;
+                if (this.y < 50 || this.y > canvasHeight - 50) this.vy *= -1;
+
+                // Animation timers
+                this.pluseTimer += 0.05;
+                this.hue = 200 + Math.sin(this.pluseTimer * 0.5) * 30; // Shift between Blue and Purple
+            }
+
+            draw(ctx) {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+
+                // SPIRIT RENDERING
+                const coreSize = 30 + Math.sin(this.pluseTimer) * 5;
+                const gradient = ctx.createRadialGradient(0, 0, coreSize * 0.2, 0, 0, coreSize * 2);
+
+                gradient.addColorStop(0, `hsla(${this.hue}, 100%, 90%, 1)`);       // White-ish core
+                gradient.addColorStop(0.4, `hsla(${this.hue}, 80%, 60%, 0.4)`);    // Inner Glow
+                gradient.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 0)`);       // Fade out
+
+                ctx.fillStyle = gradient;
+                ctx.beginPath();
+                ctx.arc(0, 0, coreSize * 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Orbiting Wisps
+                for (let i = 0; i < 3; i++) {
+                    const angle = this.pluseTimer * (1 + i * 0.5) + (i * (Math.PI * 2 / 3));
+                    const dist = 40 + Math.sin(this.pluseTimer * 2 + i) * 10;
+                    const wispX = Math.cos(angle) * dist;
+                    const wispY = Math.sin(angle) * dist;
+                    const wispSize = 4;
+
+                    ctx.shadowBlur = 10;
+                    ctx.shadowColor = `hsla(${this.hue}, 100%, 70%, 0.8)`;
+                    ctx.fillStyle = `hsla(${this.hue}, 100%, 80%, 0.8)`;
+
+                    ctx.beginPath();
+                    ctx.arc(wispX, wispY, wispSize, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                ctx.restore();
+            }
+        }
+
+        const fantasyChar = new AudioCharacter();
+        window.fantasyChar = fantasyChar;
+
+        // ======================================
+        // 3. UI FUNCTIONS
+        // ======================================
+        function toggleHelp(show) {
+            if (show) {
+                helpModal.classList.remove('pointer-events-none', 'opacity-0');
+                helpContent.classList.remove('scale-95');
+                helpContent.classList.add('scale-100');
+            } else {
+                helpModal.classList.add('pointer-events-none', 'opacity-0');
+                helpContent.classList.add('scale-95');
+                helpContent.classList.remove('scale-100');
+            }
+        }
+
+        function createFxCanvas() {
+            const c = document.createElement('canvas');
+            c.className = "absolute inset-0 pointer-events-none z-50 mix-blend-screen";
+            document.body.appendChild(c);
+            return c;
+        }
+        const fxCanvas = createFxCanvas();
+        const fxCtx = fxCanvas.getContext('2d');
+
+        function resizeFx() {
+            fxCanvas.width = window.innerWidth;
+            fxCanvas.height = window.innerHeight;
+        }
+
+        function spawnSparks(x, y, color) {
+            const count = 16;
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle(x, y, 'spark', color));
+            }
+        }
+
+        function renderGrid() {
+            const container = document.getElementById('sequencer-grid'); container.innerHTML = '';
+            const rowLabels = ["AETHER (Hi)", "AETHER (Lo)", "WIND (Hi)", "WIND (Lo)", "FIRE (Hi)", "FIRE (Lo)", "SNAP", "THUNDER"];
+            for (let r = 0; r < NUM_ROWS; r++) {
+                const label = document.createElement('div'); label.className = 'row-label col-span-1 text-right'; label.innerText = rowLabels[r]; container.appendChild(label);
+                for (let s = 0; s < 16; s++) {
+                    const btn = document.createElement('button'); btn.id = `cell-${r}-${s}`;
+                    btn.className = 'rune-stone rounded-sm flex items-center justify-center text-[10px] group';
+                    if (s % 4 === 0) btn.classList.add('beat-marker');
+                    if (r === 7) btn.innerText = "●"; else if (r === 6) btn.innerText = "×"; else if (r < 2) btn.innerText = "✧"; else btn.innerText = "I";
+                    if (grid[r][s]) btn.classList.add('active');
+                    btn.onmousedown = (e) => {
+                        grid[r][s] = !grid[r][s]; btn.classList.toggle('active');
+                        const rect = btn.getBoundingClientRect();
+                        spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, grid[r][s] ? '#ffb700' : '#00f3ff');
+                        if (!isPlaying && grid[r][s]) {
+                            if (ctx && ctx.state === 'suspended') ctx.resume();
+                            if (ctx) {
+                                if (r === 7) playDrum('kick', ctx.currentTime);
+                                else if (r === 6) playDrum('snare', ctx.currentTime);
+                                else playSynth(noteFreqs[r], ctx.currentTime, 0.2);
+                            }
+                        }
+                    };
+                    container.appendChild(btn);
+                }
+            }
+        }
+
+        function updateGridVisuals() {
+            for (let r = 0; r < NUM_ROWS; r++) {
+                for (let s = 0; s < 16; s++) {
+                    const btn = document.getElementById(`cell-${r}-${s}`);
+                    if (grid[r][s]) btn.classList.add('active'); else btn.classList.remove('active');
+                }
+            }
+        }
+
+        // ======================================
+        // 4. AUDIO ENGINE
+        // ======================================
+        function makeDistortionCurve(amount) {
+            const k = typeof amount === 'number' ? amount : 50, n_samples = 44100, curve = new Float32Array(n_samples), deg = Math.PI / 180;
+            for (let i = 0; i < n_samples; ++i) {
+                let x = i * 2 / n_samples - 1;
+                curve[i] = (3 + k) * x * 20 * deg / (Math.PI + k * Math.abs(x));
+            }
+            return curve;
+        }
+
+        function initDrone() {
+            droneOsc = ctx.createOscillator(); droneOsc.type = 'triangle'; droneOsc.frequency.value = 55;
+            droneGain = ctx.createGain(); droneGain.gain.value = 0;
+            const lfo = ctx.createOscillator(); lfo.frequency.value = 0.1;
+            const lfoGain = ctx.createGain(); lfoGain.gain.value = 10;
+            lfo.connect(lfoGain); lfoGain.connect(droneOsc.frequency); lfo.start();
+            droneOsc.connect(droneGain); droneGain.connect(reverbNode);
+            const bufferSize = ctx.sampleRate * 2; const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+            const data = buffer.getChannelData(0); for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+            const windSrc = ctx.createBufferSource(); windSrc.buffer = buffer; windSrc.loop = true;
+            const windFilter = ctx.createBiquadFilter(); windFilter.type = 'lowpass'; windFilter.frequency.value = 400;
+            windGain = ctx.createGain(); windGain.gain.value = 0;
+            windSrc.connect(windFilter); windFilter.connect(windGain); windGain.connect(reverbNode);
+            droneOsc.start(); windSrc.start();
+            droneGain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 3);
+            windGain.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 4);
+        }
+
+        function playDrum(type, time) {
+            const osc = ctx.createOscillator(); const gain = ctx.createGain();
+            if (type === 'kick') {
+                osc.frequency.setValueAtTime(130, time); osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
+                gain.gain.setValueAtTime(1.0, time); gain.gain.exponentialRampToValueAtTime(0.001, time + 0.5);
+                osc.connect(gain);
+            } else if (type === 'snare') {
+                const bufferSize = ctx.sampleRate * 0.5; const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0); for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+                const noise = ctx.createBufferSource(); noise.buffer = buffer;
+                const filter = ctx.createBiquadFilter(); filter.type = "bandpass"; filter.frequency.value = 1200;
+                gain.gain.setValueAtTime(0.6, time); gain.gain.exponentialRampToValueAtTime(0.001, time + 0.25);
+                noise.connect(filter); filter.connect(gain);
+                if (isReverbOn) { const revSend = ctx.createGain(); revSend.gain.value = 0.35; gain.connect(revSend); revSend.connect(reverbNode); }
+                if (isDistortionOn) gain.connect(distortionNode); else gain.connect(compressor);
+                if (isDelayOn) gain.connect(delayNode);
+                noise.start(time); return;
+            }
+            if (isDistortionOn) gain.connect(distortionNode); else gain.connect(compressor);
+            if (isDelayOn) { const kickDelaySend = ctx.createGain(); kickDelaySend.gain.value = 0.3; gain.connect(kickDelaySend); kickDelaySend.connect(delayNode); }
+            osc.start(time); osc.stop(time + 0.5);
+        }
+
+        function playSynth(freq, time, length = 0.4) {
+            const osc1 = ctx.createOscillator(); const osc2 = ctx.createOscillator(); const osc3 = ctx.createOscillator();
+            osc1.type = 'sawtooth'; osc2.type = 'sawtooth'; osc3.type = 'triangle';
+            osc1.frequency.value = freq; osc2.frequency.value = freq; osc3.frequency.value = freq / 2;
+            osc1.detune.value = globalDetune - 8; osc2.detune.value = globalDetune + 8; osc3.detune.value = globalDetune;
+            const filter = ctx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.setValueAtTime(isFilterOn ? 250 : 500, time);
+            if (!isFilterOn) { filter.frequency.exponentialRampToValueAtTime(5000, time + 0.05); filter.frequency.exponentialRampToValueAtTime(500, time + length); }
+            const gain = ctx.createGain(); gain.gain.setValueAtTime(0, time); gain.gain.linearRampToValueAtTime(0.12, time + 0.05); gain.gain.exponentialRampToValueAtTime(0.001, time + length + 0.1);
+            osc1.connect(filter); osc2.connect(filter); osc3.connect(filter); filter.connect(gain);
+            if (isReverbOn) { const revSend = ctx.createGain(); revSend.gain.value = 0.5; gain.connect(revSend); revSend.connect(reverbNode); }
+            if (isDistortionOn) gain.connect(distortionNode); else gain.connect(compressor);
+            if (isDelayOn) gain.connect(delayNode);
+            osc1.start(time); osc2.start(time); osc3.start(time);
+            osc1.stop(time + length + 0.5); osc2.stop(time + length + 0.5); osc3.stop(time + length + 0.5);
+        }
+
+        function nextNote() {
+            const secondsPerBeat = 60.0 / tempo; nextNoteTime += 0.25 * secondsPerBeat;
+            currentStep++; if (currentStep === 16) currentStep = 0;
+        }
+
+        function scheduleNote(step, time) {
+            requestAnimationFrame(() => {
+                document.querySelectorAll('.rune-stone').forEach(el => el.classList.remove('playing'));
+                for (let r = 0; r < NUM_ROWS; r++) {
+                    const btn = document.getElementById(`cell-${r}-${step}`);
+                    if (grid[r][step]) btn.classList.add('playing');
+                }
+            });
+            if (grid[7][step]) playDrum('kick', time);
+            if (grid[6][step]) playDrum('snare', time);
+            for (let i = 0; i < 6; i++) if (grid[i][step]) playSynth(noteFreqs[i], time);
+        }
+
+        function scheduler() {
+            while (nextNoteTime < ctx.currentTime + scheduleAheadTime) { scheduleNote(currentStep, nextNoteTime); nextNote(); }
+            if (isPlaying) timerID = requestAnimationFrame(scheduler);
+        }
+
+        async function initAudio() {
+            if (ctx) return;
+            ctx = new AudioContext();
+            compressor = ctx.createDynamicsCompressor();
+            compressor.threshold.value = -15; compressor.ratio.value = 10;
+            masterBus = ctx.createGain();
+            masterBus.gain.value = 0.7;
+
+            reverbNode = ctx.createConvolver();
+            const rate = ctx.sampleRate;
+            const length = rate * 3.5;
+            const impulse = ctx.createBuffer(2, length, rate);
+            for (let ch = 0; ch < 2; ch++) {
+                const data = impulse.getChannelData(ch);
+                for (let i = 0; i < length; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2.5);
+                }
+            }
+            reverbNode.buffer = impulse;
+
+            delayNode = ctx.createDelay(); delayNode.delayTime.value = 0.375;
+            delayFeedback = ctx.createGain(); delayFeedback.gain.value = 0.4;
+            delayNode.connect(delayFeedback); delayFeedback.connect(delayNode); delayNode.connect(compressor);
+
+            distortionNode = ctx.createWaveShaper(); distortionNode.curve = makeDistortionCurve(50); distortionNode.oversample = '4x';
+            distortionNode.connect(compressor);
+
+            compressor.connect(masterBus); reverbNode.connect(masterBus); masterBus.connect(ctx.destination);
+            initDrone();
+
+            grid[7][0] = true; grid[7][4] = true; grid[7][8] = true; grid[7][12] = true; grid[7][14] = true;
+            grid[6][4] = true; grid[6][12] = true;
+            grid[5][0] = true; grid[4][2] = true; grid[2][4] = true; grid[0][6] = true;
+            grid[2][8] = true; grid[4][10] = true; grid[5][12] = true; grid[4][14] = true;
+            renderGrid(); updateGridVisuals();
+
+            const vizAnalyser = ctx.createAnalyser(); vizAnalyser.fftSize = 512;
+            masterBus.connect(vizAnalyser);
+            analyser = vizAnalyser;
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+            if (window.PowerAudio) {
+                new window.PowerAudio.Viz({ container: '#viz-container', externalAnalyser: vizAnalyser });
+                console.log("PowerAudio Visualizer Initialized");
+            } else { console.error("PowerAudio library not found!"); }
+        }
+
+        // ======================================
+        // 5. MAIN LOOP
+        // ======================================
+        function fxLoop() {
+            fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+            // Parallax
+            const runeCenter = document.getElementById('center-rune'); // Re-query just in case or use closure if reliable
+            if (vizContainer) {
+                const rect = vizContainer.getBoundingClientRect();
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const relX = mouse.x - rect.left - centerX;
+                const relY = mouse.y - rect.top - centerY;
+                // runeCenter element seems specific to old implementation?
+                // Let's check update loop logic - it accesses analyser and dataArray
+            }
+
+            // Re-added Character Logic
+            // It now roams so needs canvas dimensions
+            fantasyChar.update(fxCanvas.width, fxCanvas.height);
+            fantasyChar.draw(fxCtx);
+
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw(fxCtx);
+                if (particles[i].life <= 0) particles.splice(i, 1);
+            }
+            requestAnimationFrame(fxLoop);
+        }
+
+        // ======================================
+        // 6. INITIALIZATION & LISTENERS
+        // ======================================
+
+        // Start Dust
+        // (Moved to top level check)
+        if (dustContainer) {
+            for (let i = 0; i < 40; i++) {
+                const mote = document.createElement('div');
+                mote.className = 'dust-mote';
+                mote.style.left = Math.random() * 100 + 'vw';
+                mote.style.width = Math.random() * 4 + 1 + 'px';
+                mote.style.height = mote.style.width;
+                mote.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                mote.style.animationDelay = (Math.random() * 10) + 's';
+                dustContainer.appendChild(mote);
+            }
+        }
+
+        // Event Listeners
+        if (openHelp) openHelp.addEventListener('click', () => toggleHelp(true));
+        if (closeHelp) closeHelp.addEventListener('click', () => toggleHelp(false));
+        if (closeHelpBtn) closeHelpBtn.addEventListener('click', () => toggleHelp(false));
+
+        window.addEventListener('resize', resizeFx);
+        resizeFx();
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            if (Math.random() > 0.2) {
+                particles.push(new Particle(mouse.x, mouse.y, 'trail'));
+            }
+        });
+
+        startOverlay.addEventListener('click', function (e) {
+            initAudio();
+            spawnSparks(e.clientX, e.clientY, '#ffb700');
+            this.style.opacity = '0';
+            setTimeout(() => this.style.display = 'none', 1000);
+            setTimeout(() => toggleHelp(true), 1500);
+        });
+
+        btnPlay.addEventListener('click', (e) => {
+            if (!ctx) initAudio(); if (ctx.state === 'suspended') ctx.resume();
+            const rect = btnPlay.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#ffb700');
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                btnPlay.innerText = "CEASE"; btnPlay.classList.add('bg-red-900/30', 'border-red-500', 'text-red-100'); btnPlay.classList.remove('bg-yellow-900/20', 'border-yellow-700/50', 'text-yellow-100');
+                nextNoteTime = ctx.currentTime + 0.1; currentStep = 0; scheduler();
+            } else {
+                btnPlay.innerText = "AWAKEN"; btnPlay.classList.remove('bg-red-900/30', 'border-red-500', 'text-red-100'); btnPlay.classList.add('bg-yellow-900/20', 'border-yellow-700/50', 'text-yellow-100');
+                cancelAnimationFrame(timerID);
+            }
+        });
+
+        btnClear.addEventListener('click', () => {
+            const rect = btnClear.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#ff0000');
+            grid = grid.map(row => row.fill(false)); updateGridVisuals();
+        });
+
+        document.getElementById('tempo-slider').addEventListener('input', (e) => { tempo = parseInt(e.target.value); document.getElementById('bpm-display').innerText = `${tempo} BPM`; });
+        document.getElementById('pitch-slider').addEventListener('input', (e) => globalDetune = parseInt(e.target.value));
+
+        const btnVerb = document.getElementById('fx-verb');
+        if (btnVerb) btnVerb.addEventListener('click', function () {
+            const rect = this.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#9333ea');
+            isReverbOn = !isReverbOn; this.classList.toggle('bg-purple-900/50'); this.classList.toggle('text-white'); this.classList.toggle('shadow-[0_0_20px_purple]');
+        });
+        const btnFilter = document.getElementById('fx-filter');
+        if (btnFilter) btnFilter.addEventListener('click', function () {
+            const rect = this.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#3b82f6');
+            isFilterOn = !isFilterOn; this.classList.toggle('bg-blue-900/50'); this.classList.toggle('text-white'); this.classList.toggle('shadow-[0_0_20px_blue]');
+        });
+        const btnDelay = document.getElementById('fx-delay');
+        if (btnDelay) btnDelay.addEventListener('click', function () {
+            const rect = this.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#14b8a6');
+            isDelayOn = !isDelayOn; this.classList.toggle('bg-teal-900/50'); this.classList.toggle('text-white'); this.classList.toggle('shadow-[0_0_20px_teal]');
+        });
+        const btnDist = document.getElementById('fx-dist');
+        if (btnDist) btnDist.addEventListener('click', function () {
+            const rect = this.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#ef4444');
+            isDistortionOn = !isDistortionOn; this.classList.toggle('bg-red-900/50'); this.classList.toggle('text-white'); this.classList.toggle('shadow-[0_0_20px_red]');
+        });
+
+        // Loop Start
+        fxLoop();
+    </script>
+</body>
+
+</html>
