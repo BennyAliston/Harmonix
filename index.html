@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harmonix</title>
+    <title>Harmonix - Wizard's Workshop</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body
-    class="min-h-screen w-full flex flex-col p-4 md:p-8 relative selection:bg-purple-900 selection:text-white overflow-x-hidden lg:overflow-hidden">
+    class="min-h-screen w-full flex flex-col p-4 md:p-8 relative selection:bg-amber-500 selection:text-white overflow-x-hidden lg:overflow-hidden">
 
-    <!-- Dust Particles -->
+    <!-- Magic Dust -->
     <div id="dust-container" class="dust-container"></div>
 
     <!-- FX Canvas Layer -->
@@ -22,46 +22,50 @@
     <!-- HELP MODAL -->
     <div id="help-modal"
         class="fixed inset-0 z-[100] modal-bg flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="ancient-border bg-[#1a1624] p-8 max-w-lg w-full relative rounded-sm text-center transform scale-95 transition-transform duration-300"
+        <div class="playful-card p-8 max-w-lg w-full relative transform scale-95 transition-transform duration-300"
             id="help-content">
-            <button id="close-help" class="absolute top-2 right-4 text-2xl text-red-400 hover:text-red-200">×</button>
-            <h2 class="text-3xl text-yellow-100 font-[Cinzel] mb-4">The Grimoire</h2>
-            <div class="text-left space-y-4 text-yellow-100/80 text-sm font-serif">
-                <p><strong class="text-yellow-500">How to Create Sound:</strong><br>
-                    The <strong>Rune Tablet</strong> (bottom right) is your musical score. Click runes to activate them.
+            <button id="close-help"
+                class="absolute top-4 right-4 text-2xl text-amber-900/50 hover:text-red-600 rounded-full w-8 h-8 flex items-center justify-center transition-colors">×</button>
+            <h2 class="text-3xl font-bold mb-4 text-center text-amber-800" style="font-family: 'MedievalSharp';">
+                Wizard's Manual</h2>
+            <div class="text-left space-y-4 text-amber-900/80 text-sm font-semibold">
+                <p><strong class="text-amber-700">Cast Your Spell:</strong><br>
+                    The <strong>Rune Grid</strong> (bottom right) is your spellbook. Ignite the runes to weave magic
+                    music!
                 </p>
 
-                <p><strong class="text-blue-400">Horizontal (Time):</strong><br>
-                    Time flows from left to right. There are 16 steps in a loop.</p>
+                <p><strong class="text-blue-700">Horizontal (Time):</strong><br>
+                    The flow of magic loops endlessly.</p>
 
-                <p><strong class="text-purple-400">Vertical (Pitch/Instrument):</strong><br>
-                    • <strong>Top Rows (Aether/Wind):</strong> High pitched melodies.<br>
-                    • <strong>Middle Rows (Fire):</strong> Bass and lower notes.<br>
-                    • <strong>Bottom Rows (Snap/Thunder):</strong> Drums.</p>
+                <p><strong class="text-purple-700">Vertical (Elements):</strong><br>
+                    • <strong>Top Rows:</strong> Aether (High/Magic)<br>
+                    • <strong>Middle Rows:</strong> Earth (Mid/Bass)<br>
+                    ...and Thunder (Drums) at the bottom.</p>
 
-                <p class="text-xs italic text-center mt-6 text-gray-500">"Combine Thunder with Aether to shake the
-                    heavens."</p>
+                <p class="text-xs italic text-center mt-6 text-amber-900/60">"Alchemy requires patience... and a good
+                    beat."</p>
             </div>
             <button id="close-help-btn"
-                class="mt-6 border border-yellow-700 text-yellow-500 px-6 py-2 hover:bg-yellow-900/30 font-[Cinzel]">I
-                Understand</button>
+                class="mt-6 w-full rpg-btn rpg-btn-green py-2 rounded shadow-lg hover:brightness-110 active:scale-95 text-lg">
+                Enter Workshop
+            </button>
         </div>
     </div>
 
     <!-- Start Overlay -->
     <div id="start-overlay"
-        class="absolute inset-0 z-[60] bg-[#050308] flex flex-col items-center justify-center cursor-pointer transition-opacity duration-1000 px-4">
+        class="absolute inset-0 z-[60] bg-slate-900/90 flex flex-col items-center justify-center cursor-pointer transition-opacity duration-1000 px-4 backdrop-blur-sm">
         <div class="relative group text-center">
             <div
-                class="absolute -inset-8 bg-gradient-to-r from-purple-600 to-yellow-600 blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-1000 rounded-full animate-pulse">
+                class="absolute -inset-16 bg-gradient-to-r from-amber-500 to-purple-600 blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-1000 rounded-full animate-pulse">
             </div>
             <h1
-                class="text-4xl sm:text-5xl md:text-7xl font-black title-text mb-4 relative z-10 tracking-widest drop-shadow-[0_0_15px_rgba(255,215,0,0.3)] break-words">
+                class="text-6xl sm:text-7xl md:text-8xl font-black title-text mb-4 relative z-10 tracking-widest drop-shadow-xl transform hover:scale-105 transition-transform duration-300">
                 HARMONIX</h1>
         </div>
         <p
-            class="text-sm sm:text-xl text-yellow-600/80 font-[Cinzel] tracking-[0.3em] sm:tracking-[0.5em] mt-8 border-t border-b border-yellow-900/30 py-2 animate-pulse text-center">
-            TOUCH TO AWAKEN</p>
+            class="text-xl sm:text-2xl text-amber-400 font-[MedievalSharp] tracking-widest mt-8 animate-bounce text-center drop-shadow-md">
+            TOUCH TO SUMMON</p>
     </div>
 
     <!-- Main Container -->
@@ -73,45 +77,45 @@
             class="lg:w-1/3 flex flex-col gap-4 lg:gap-6 h-auto lg:h-full lg:overflow-y-auto pr-0 lg:pr-2 tablet-scroll-area shrink-0 pb-20 lg:pb-0">
 
             <!-- Header & Master Control -->
-            <div class="ancient-border p-4 sm:p-6 rounded-sm relative group shrink-0">
+            <div class="playful-card p-6 relative group shrink-0">
                 <!-- Help Button -->
                 <button id="open-help"
-                    class="absolute top-4 right-4 text-yellow-800 hover:text-yellow-400 border border-yellow-900/50 rounded-full w-6 h-6 flex items-center justify-center text-xs font-serif shadow-lg bg-black/50"
-                    title="Open Grimoire">?</button>
+                    class="absolute top-4 right-4 text-amber-800 hover:text-amber-500 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold transition-all"
+                    title="Open Manual">?</button>
 
                 <div class="flex justify-between items-center mb-6 pr-8">
-                    <h2 class="text-xl sm:text-2xl text-yellow-100 font-[Cinzel] drop-shadow-lg">Rune Sequencer</h2>
+                    <h2 class="text-2xl font-bold font-[MedievalSharp] text-amber-900">Bard's Lute</h2>
                     <div id="bpm-display"
-                        class="text-yellow-500 font-bold font-mono text-sm sm:text-lg border border-yellow-900/50 px-3 py-1 bg-black/50 shadow-[0_0_15px_rgba(255,183,0,0.1)] backdrop-blur-sm">
+                        class="text-amber-700 font-bold font-mono text-lg bg-amber-100/50 px-3 py-1 rounded border border-amber-900/20 shadow-inner">
                         110 BPM</div>
                 </div>
 
                 <div class="flex gap-4 mb-8">
                     <button id="btn-play"
-                        class="flex-1 bg-yellow-900/20 border border-yellow-700/50 hover:bg-yellow-700/40 text-yellow-100 py-3 sm:py-4 font-[Cinzel] font-bold tracking-widest transition-all active:scale-95 shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(255,165,0,0.2)] text-sm sm:text-base">
-                        AWAKEN
+                        class="flex-1 rpg-btn rpg-btn-green py-3 sm:py-4 text-xl tracking-widest shadow-lg">
+                        CAST
                     </button>
-                    <button id="btn-clear"
-                        class="px-4 sm:px-5 border border-red-900/50 text-red-400 hover:bg-red-900/20 active:bg-red-900/40 transition-all active:scale-95 hover:text-red-200 shadow-[0_0_10px_rgba(0,0,0,0.5)]"
-                        title="Clear All Runes">
+                    <button id="btn-clear" class="px-5 rpg-btn rpg-btn-red py-3 sm:py-4 text-xl shadow-lg"
+                        title="Dispel All Magic">
+                        X
                     </button>
                 </div>
 
                 <!-- Sliders -->
-                <div class="space-y-6 sm:space-y-8">
+                <div class="space-y-6 sm:space-y-8 px-2">
                     <div>
                         <div
-                            class="flex justify-between text-[10px] sm:text-xs text-yellow-600 mb-2 font-[Cinzel] tracking-widest">
-                            <span>FLOW OF TIME</span>
-                            <span>TEMPO</span>
+                            class="flex justify-between text-xs text-amber-800 mb-2 font-bold tracking-widest uppercase">
+                            <span>Time Flow</span>
+                            <span>Tempo</span>
                         </div>
                         <input type="range" id="tempo-slider" min="60" max="180" value="110" class="w-full">
                     </div>
                     <div>
                         <div
-                            class="flex justify-between text-[10px] sm:text-xs text-blue-400 mb-2 font-[Cinzel] tracking-widest">
-                            <span>ASTRAL HARMONY</span>
-                            <span>PITCH</span>
+                            class="flex justify-between text-xs text-amber-800 mb-2 font-bold tracking-widest uppercase">
+                            <span>Harmony</span>
+                            <span>Pitch</span>
                         </div>
                         <input type="range" id="pitch-slider" min="-1200" max="1200" value="0" class="w-full">
                     </div>
@@ -119,62 +123,51 @@
             </div>
 
             <!-- Spellbook (DJ Effects) -->
-            <div class="ancient-border p-4 sm:p-6 rounded-sm flex-col shrink-0">
-                <h3
-                    class="text-lg sm:text-xl text-yellow-100 font-[Cinzel] mb-4 sm:mb-6 text-center drop-shadow-[0_0_5px_rgba(255,255,255,0.2)]">
-                    Incantations</h3>
+            <div class="playful-card p-6 flex-col shrink-0">
+                <h3 class="text-xl text-center font-bold font-[MedievalSharp] mb-4 sm:mb-6 text-amber-900">
+                    Potions & Scrolls</h3>
 
                 <div class="grid grid-cols-2 gap-3 sm:gap-4">
                     <button id="fx-verb"
-                        class="h-16 sm:h-20 border border-purple-900/50 bg-gradient-to-b from-purple-900/10 to-transparent hover:from-purple-900/30 hover:border-purple-500 text-purple-300 font-[Cinzel] text-xs sm:text-sm transition-all shadow-[0_0_15px_rgba(147,51,234,0.05)] active:scale-95 hover:shadow-[0_0_20px_rgba(147,51,234,0.2)] bg-purple-900/50 text-white shadow-[0_0_20px_purple]">
-                        CAVERN<br><span class="text-[10px] sm:text-xs opacity-50 tracking-widest">REVERB</span>
+                        class="gem-btn h-16 sm:h-20 bg-gradient-to-br from-purple-500 to-purple-700 hover:from-purple-400 hover:to-purple-600 font-[Cinzel] font-bold">
+                        CAVERN<br><span class="text-[10px] opacity-70 tracking-widest">REVERB</span>
                     </button>
                     <button id="fx-filter"
-                        class="h-16 sm:h-20 border border-blue-900/50 bg-gradient-to-b from-blue-900/10 to-transparent hover:from-blue-900/30 hover:border-blue-500 text-blue-300 font-[Cinzel] text-xs sm:text-sm transition-all shadow-[0_0_15px_rgba(59,130,246,0.05)] active:scale-95 hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]">
-                        MUFFLE<br><span class="text-[10px] sm:text-xs opacity-50 tracking-widest">FILTER</span>
+                        class="gem-btn h-16 sm:h-20 bg-gradient-to-br from-blue-500 to-blue-700 hover:from-blue-400 hover:to-blue-600 font-[Cinzel] font-bold">
+                        MUFFLE<br><span class="text-[10px] opacity-70 tracking-widest">FILTER</span>
                     </button>
                     <button id="fx-delay"
-                        class="h-16 sm:h-20 border border-teal-900/50 bg-gradient-to-b from-teal-900/10 to-transparent hover:from-teal-900/30 hover:border-teal-500 text-teal-300 font-[Cinzel] text-xs sm:text-sm transition-all shadow-[0_0_15px_rgba(20,184,166,0.05)] active:scale-95 hover:shadow-[0_0_20px_rgba(20,184,166,0.2)]">
-                        CHRONO<br><span class="text-[10px] sm:text-xs opacity-50 tracking-widest">ECHO</span>
+                        class="gem-btn h-16 sm:h-20 bg-gradient-to-br from-teal-500 to-teal-700 hover:from-teal-400 hover:to-teal-600 font-[Cinzel] font-bold">
+                        ECHO<br><span class="text-[10px] opacity-70 tracking-widest">DELAY</span>
                     </button>
                     <button id="fx-dist"
-                        class="h-16 sm:h-20 border border-red-900/50 bg-gradient-to-b from-red-900/10 to-transparent hover:from-red-900/30 hover:border-red-500 text-red-300 font-[Cinzel] text-xs sm:text-sm transition-all shadow-[0_0_15px_rgba(239,68,68,0.05)] active:scale-95 hover:shadow-[0_0_20px_rgba(239,68,68,0.2)]">
-                        STATIC<br><span class="text-[10px] sm:text-xs opacity-50 tracking-widest">HEX</span>
+                        class="gem-btn h-16 sm:h-20 bg-gradient-to-br from-red-500 to-red-700 hover:from-red-400 hover:to-red-600 font-[Cinzel] font-bold">
+                        CURSE<br><span class="text-[10px] opacity-70 tracking-widest">DISTORT</span>
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- RIGHT: Visualizer & Grid -->
-        <div class="lg:w-2/3 flex flex-col gap-4 lg:gap-6 h-auto lg:h-full overflow-visible shrink-0 p-4">
+        <div class="lg:w-2/3 flex flex-col gap-4 lg:gap-6 h-auto lg:h-full overflow-visible shrink-0 p-2 md:p-4">
 
             <!-- Scrying Pool (Visualizer) -->
-            <!-- Adaptive height: smaller on mobile -->
-            <div
-                class="relative ancient-border rounded-full md:rounded-lg overflow-hidden orb-glow min-h-[250px] sm:min-h-[300px] md:min-h-[350px] shrink-0 group cursor-none">
-                <div id="viz-container" class="absolute inset-0 w-full h-full z-0 opacity-60"></div>
-
-
+            <div class="relative orb-glow min-h-[250px] sm:min-h-[300px] md:min-h-[350px] shrink-0 group cursor-none">
+                <div id="viz-container" class="absolute inset-0 w-full h-full z-0 opacity-80 mix-blend-screen"></div>
             </div>
 
             <!-- The Grid (Stone Tablet) -->
-            <div class="ancient-border p-4 sm:p-6 rounded-sm relative flex flex-col flex-1 min-h-0">
-                <div
-                    class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] pointer-events-none">
-                </div>
-
+            <div class="playful-card p-4 sm:p-6 relative flex flex-col flex-1 min-h-0 bg-[#eefeec]">
                 <div class="flex justify-between items-end mb-4 px-2 relative z-10 shrink-0">
-                    <h3 class="text-base sm:text-lg text-yellow-500 font-[Cinzel] tracking-widest drop-shadow-md">RUNE
-                        TABLET</h3>
+                    <h3 class="text-lg font-bold tracking-wide font-[MedievalSharp] text-amber-900">RUNE GRID</h3>
                     <div
-                        class="text-[10px] sm:text-xs text-gray-500 font-mono border border-gray-800 px-2 py-0.5 rounded bg-black/40">
+                        class="text-xs text-amber-800 font-mono bg-amber-100 px-2 py-1 rounded border border-amber-200 shadow-sm">
                         C MINOR DORIAN</div>
                 </div>
 
                 <div class="overflow-y-auto overflow-x-auto tablet-scroll-area relative z-10 flex-1">
-                    <!-- Added min-w for horizontal scrolling on mobile -->
                     <div id="sequencer-grid"
-                        class="grid grid-cols-[minmax(70px,90px)_repeat(16,minmax(24px,1fr))] grid-rows-8 gap-1 min-h-[250px] sm:min-h-[320px] min-w-[600px] lg:min-w-0 select-none pb-2 p-12">
+                        class="grid grid-cols-[minmax(60px,80px)_repeat(16,minmax(24px,1fr))] grid-rows-8 gap-1.5 min-h-[250px] sm:min-h-[320px] min-w-[600px] lg:min-w-0 select-none pb-2 p-4">
                         <!-- JS Injects Runes Here -->
                     </div>
                 </div>
@@ -185,7 +178,7 @@
     <script src="js/poweraudio.js"></script>
     <script>
 
-        // --- INLINED APP.JS LOGIC WITH REORDERED GLOBALS ---
+        // --- HARMONIX LOGIC - WHIMSICAL WIZARD EDITION ---
 
         // 1. GLOBAL STATE DEFINITIONS
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -229,8 +222,9 @@
                 if (color) {
                     this.color = color;
                 } else {
-                    const hue = Math.random() > 0.5 ? 180 : 270;
-                    this.color = type === 'trail' ? `hsla(${hue + Math.random() * 40}, 100%, 70%, 1)` : '#ffd700';
+                    // Magic Sparkles
+                    const hue = Math.random() * 60 + 180; // Blue/Cyan/Purple range
+                    this.color = type === 'trail' ? `hsla(${hue}, 100%, 70%, 1)` : '#FFD700'; // Gold sparks
                 }
                 const angle = Math.random() * Math.PI * 2;
                 const speed = type === 'spark' ? Math.random() * 5 + 2 : Math.random() * 0.8;
@@ -238,16 +232,16 @@
                 this.vy = Math.sin(angle) * speed;
                 this.life = 1.0;
                 this.decay = type === 'spark' ? Math.random() * 0.03 + 0.02 : 0.015;
-                this.size = type === 'spark' ? Math.random() * 3 + 1 : Math.random() * 4 + 2;
+                this.size = type === 'spark' ? Math.random() * 4 + 2 : Math.random() * 6 + 2;
             }
             update() {
                 this.x += this.vx;
                 this.y += this.vy;
                 this.life -= this.decay;
                 if (this.type === 'trail') {
-                    this.vy -= 0.03;
+                    this.vy -= 0.02; // Float up like magic dust
                     this.vx += (Math.random() - 0.5) * 0.1;
-                    this.size *= 0.96;
+                    this.size *= 0.95;
                 }
             }
             draw(ctx) {
@@ -255,72 +249,73 @@
                 ctx.globalAlpha = this.life;
                 ctx.fillStyle = this.color;
                 ctx.shadowColor = this.color;
-                ctx.shadowBlur = this.type === 'spark' ? 15 : 5;
+                ctx.shadowBlur = 10;
+
+                // Diamond/Star shape for Magic
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.moveTo(this.x, this.y - this.size);
+                ctx.lineTo(this.x + this.size, this.y);
+                ctx.lineTo(this.x, this.y + this.size);
+                ctx.lineTo(this.x - this.size, this.y);
                 ctx.fill();
+
                 ctx.restore();
             }
         }
 
         class AudioCharacter {
             constructor() {
-                // Procedural Spirit - No Image Loading
+                // Procedural Glowing Orb / Wisp
                 this.x = window.innerWidth / 2;
                 this.y = window.innerHeight / 2;
                 this.vx = (Math.random() - 0.5) * 4;
                 this.vy = (Math.random() - 0.5) * 4;
 
                 this.pluseTimer = 0;
-                this.hue = 200; // Cyan/Blue base
-                this.loaded = true; // Always true for procedural
+                this.hue = 200;
+                this.loaded = true;
             }
 
             update(canvasWidth, canvasHeight) {
-                // Move
                 this.x += this.vx;
                 this.y += this.vy;
 
-                // Bounce off walls with margin
                 if (this.x < 50 || this.x > canvasWidth - 50) this.vx *= -1;
                 if (this.y < 50 || this.y > canvasHeight - 50) this.vy *= -1;
 
-                // Animation timers
                 this.pluseTimer += 0.05;
-                this.hue = 200 + Math.sin(this.pluseTimer * 0.5) * 30; // Shift between Blue and Purple
+                this.hue = 180 + Math.sin(this.pluseTimer * 0.5) * 40; // Cyan to Blue/Purple
             }
 
             draw(ctx) {
                 ctx.save();
                 ctx.translate(this.x, this.y);
 
-                // SPIRIT RENDERING
-                const coreSize = 30 + Math.sin(this.pluseTimer) * 5;
+                // WISP RENDERING
+                const coreSize = 25 + Math.sin(this.pluseTimer) * 5;
                 const gradient = ctx.createRadialGradient(0, 0, coreSize * 0.2, 0, 0, coreSize * 2);
 
-                gradient.addColorStop(0, `hsla(${this.hue}, 100%, 90%, 1)`);       // White-ish core
-                gradient.addColorStop(0.4, `hsla(${this.hue}, 80%, 60%, 0.4)`);    // Inner Glow
-                gradient.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 0)`);       // Fade out
+                gradient.addColorStop(0, `hsla(${this.hue}, 100%, 95%, 1)`);       // White core
+                gradient.addColorStop(0.4, `hsla(${this.hue}, 100%, 60%, 0.5)`);    // Glow
+                gradient.addColorStop(1, `hsla(${this.hue}, 100%, 50%, 0)`);       // Fade
 
                 ctx.fillStyle = gradient;
                 ctx.beginPath();
                 ctx.arc(0, 0, coreSize * 2, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Orbiting Wisps
-                for (let i = 0; i < 3; i++) {
-                    const angle = this.pluseTimer * (1 + i * 0.5) + (i * (Math.PI * 2 / 3));
-                    const dist = 40 + Math.sin(this.pluseTimer * 2 + i) * 10;
+                // Orbiting Runes (Little dots)
+                for (let i = 0; i < 4; i++) {
+                    const angle = this.pluseTimer * (0.5 + i * 0.2) + (i * (Math.PI * 2 / 4));
+                    const dist = 50 + Math.sin(this.pluseTimer * 1.5 + i) * 10;
                     const wispX = Math.cos(angle) * dist;
                     const wispY = Math.sin(angle) * dist;
-                    const wispSize = 4;
 
-                    ctx.shadowBlur = 10;
-                    ctx.shadowColor = `hsla(${this.hue}, 100%, 70%, 0.8)`;
-                    ctx.fillStyle = `hsla(${this.hue}, 100%, 80%, 0.8)`;
-
+                    ctx.fillStyle = `hsla(${this.hue + 60}, 100%, 80%, 0.9)`;
+                    ctx.shadowColor = ctx.fillStyle;
+                    ctx.shadowBlur = 8;
                     ctx.beginPath();
-                    ctx.arc(wispX, wispY, wispSize, 0, Math.PI * 2);
+                    ctx.arc(wispX, wispY, 4, 0, Math.PI * 2);
                     ctx.fill();
                 }
 
@@ -359,7 +354,7 @@
         }
 
         function spawnSparks(x, y, color) {
-            const count = 16;
+            const count = 12;
             for (let i = 0; i < count; i++) {
                 particles.push(new Particle(x, y, 'spark', color));
             }
@@ -367,19 +362,32 @@
 
         function renderGrid() {
             const container = document.getElementById('sequencer-grid'); container.innerHTML = '';
-            const rowLabels = ["AETHER (Hi)", "AETHER (Lo)", "WIND (Hi)", "WIND (Lo)", "FIRE (Hi)", "FIRE (Lo)", "SNAP", "THUNDER"];
+            const rowLabels = ["AETHER 1", "AETHER 2", "EARTH 1", "EARTH 2", "FIRE 1", "FIRE 2", "SNAP", "THUNDER"];
             for (let r = 0; r < NUM_ROWS; r++) {
-                const label = document.createElement('div'); label.className = 'row-label col-span-1 text-right'; label.innerText = rowLabels[r]; container.appendChild(label);
+                const label = document.createElement('div'); label.className = 'row-label col-span-1 text-right flex items-center justify-end'; label.innerText = rowLabels[r]; container.appendChild(label);
                 for (let s = 0; s < 16; s++) {
                     const btn = document.createElement('button'); btn.id = `cell-${r}-${s}`;
-                    btn.className = 'rune-stone rounded-sm flex items-center justify-center text-[10px] group';
+                    btn.className = 'rune-stone flex items-center justify-center text-[10px] group';
+                    // Runes
+                    const runes = ["ᚠ", "ᚢ", "ᚦ", "ᚨ", "ᚱ", "ᚲ", "ᚷ", "ᚹ", "ᚺ", "ᚾ", "ᛁ", "ᛃ", "ᛇ", "ᛈ", "ᛉ", "ᛊ"];
+
                     if (s % 4 === 0) btn.classList.add('beat-marker');
-                    if (r === 7) btn.innerText = "●"; else if (r === 6) btn.innerText = "×"; else if (r < 2) btn.innerText = "✧"; else btn.innerText = "I";
-                    if (grid[r][s]) btn.classList.add('active');
+
+                    // Only show rune on hover or active to keep it clean? Or always? Let's show faint rune.
+                    btn.innerText = runes[s % runes.length];
+                    btn.style.color = "rgba(255,193,7,0.3)";
+
+                    if (grid[r][s]) {
+                        btn.classList.add('active');
+                        btn.style.color = "#3e2723";
+                    }
+
                     btn.onmousedown = (e) => {
                         grid[r][s] = !grid[r][s]; btn.classList.toggle('active');
                         const rect = btn.getBoundingClientRect();
-                        spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, grid[r][s] ? '#ffb700' : '#00f3ff');
+                        spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, grid[r][s] ? '#FFD700' : '#4DB6AC');
+                        if (grid[r][s]) btn.style.color = "#3e2723"; else btn.style.color = "rgba(255,193,7,0.3)";
+
                         if (!isPlaying && grid[r][s]) {
                             if (ctx && ctx.state === 'suspended') ctx.resume();
                             if (ctx) {
@@ -398,7 +406,13 @@
             for (let r = 0; r < NUM_ROWS; r++) {
                 for (let s = 0; s < 16; s++) {
                     const btn = document.getElementById(`cell-${r}-${s}`);
-                    if (grid[r][s]) btn.classList.add('active'); else btn.classList.remove('active');
+                    if (grid[r][s]) {
+                        btn.classList.add('active');
+                        btn.style.color = "#3e2723";
+                    } else {
+                        btn.classList.remove('active');
+                        btn.style.color = "rgba(255,193,7,0.3)";
+                    }
                 }
             }
         }
@@ -569,7 +583,7 @@
         // Start Dust
         // (Moved to top level check)
         if (dustContainer) {
-            for (let i = 0; i < 40; i++) {
+            for (let i = 0; i < 30; i++) {
                 const mote = document.createElement('div');
                 mote.className = 'dust-mote';
                 mote.style.left = Math.random() * 100 + 'vw';
@@ -599,7 +613,7 @@
 
         startOverlay.addEventListener('click', function (e) {
             initAudio();
-            spawnSparks(e.clientX, e.clientY, '#ffb700');
+            spawnSparks(e.clientX, e.clientY, '#FF69B4');
             this.style.opacity = '0';
             setTimeout(() => this.style.display = 'none', 1000);
             setTimeout(() => toggleHelp(true), 1500);
@@ -607,19 +621,23 @@
 
         btnPlay.addEventListener('click', (e) => {
             if (!ctx) initAudio(); if (ctx.state === 'suspended') ctx.resume();
-            const rect = btnPlay.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#ffb700');
+            const rect = btnPlay.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#4CAF50');
             isPlaying = !isPlaying;
             if (isPlaying) {
-                btnPlay.innerText = "CEASE"; btnPlay.classList.add('bg-red-900/30', 'border-red-500', 'text-red-100'); btnPlay.classList.remove('bg-yellow-900/20', 'border-yellow-700/50', 'text-yellow-100');
+                btnPlay.innerText = "HALT";
+                btnPlay.classList.add('rpg-btn-red');
+                btnPlay.classList.remove('rpg-btn-green');
                 nextNoteTime = ctx.currentTime + 0.1; currentStep = 0; scheduler();
             } else {
-                btnPlay.innerText = "AWAKEN"; btnPlay.classList.remove('bg-red-900/30', 'border-red-500', 'text-red-100'); btnPlay.classList.add('bg-yellow-900/20', 'border-yellow-700/50', 'text-yellow-100');
+                btnPlay.innerText = "CAST";
+                btnPlay.classList.add('rpg-btn-green');
+                btnPlay.classList.remove('rpg-btn-red');
                 cancelAnimationFrame(timerID);
             }
         });
 
         btnClear.addEventListener('click', () => {
-            const rect = btnClear.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#ff0000');
+            const rect = btnClear.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#F44336');
             grid = grid.map(row => row.fill(false)); updateGridVisuals();
         });
 
@@ -629,22 +647,30 @@
         const btnVerb = document.getElementById('fx-verb');
         if (btnVerb) btnVerb.addEventListener('click', function () {
             const rect = this.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#9333ea');
-            isReverbOn = !isReverbOn; this.classList.toggle('bg-purple-900/50'); this.classList.toggle('text-white'); this.classList.toggle('shadow-[0_0_20px_purple]');
+            isReverbOn = !isReverbOn;
+            this.classList.toggle('brightness-150');
+            this.classList.toggle('scale-95');
         });
         const btnFilter = document.getElementById('fx-filter');
         if (btnFilter) btnFilter.addEventListener('click', function () {
             const rect = this.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#3b82f6');
-            isFilterOn = !isFilterOn; this.classList.toggle('bg-blue-900/50'); this.classList.toggle('text-white'); this.classList.toggle('shadow-[0_0_20px_blue]');
+            isFilterOn = !isFilterOn;
+            this.classList.toggle('brightness-150');
+            this.classList.toggle('scale-95');
         });
         const btnDelay = document.getElementById('fx-delay');
         if (btnDelay) btnDelay.addEventListener('click', function () {
             const rect = this.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#14b8a6');
-            isDelayOn = !isDelayOn; this.classList.toggle('bg-teal-900/50'); this.classList.toggle('text-white'); this.classList.toggle('shadow-[0_0_20px_teal]');
+            isDelayOn = !isDelayOn;
+            this.classList.toggle('brightness-150');
+            this.classList.toggle('scale-95');
         });
         const btnDist = document.getElementById('fx-dist');
         if (btnDist) btnDist.addEventListener('click', function () {
             const rect = this.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#ef4444');
-            isDistortionOn = !isDistortionOn; this.classList.toggle('bg-red-900/50'); this.classList.toggle('text-white'); this.classList.toggle('shadow-[0_0_20px_red]');
+            isDistortionOn = !isDistortionOn;
+            this.classList.toggle('brightness-150');
+            this.classList.toggle('scale-95');
         });
 
         // Loop Start

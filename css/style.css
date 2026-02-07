@@ -1,45 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=MedievalSharp&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@400;700&display=swap');
 
 :root {
-    --rune-gold: #ffb700;
-    --rune-blue: #00f3ff;
-    --rune-purple: #9d00ff;
-    --rune-red: #ff3333;
-    --void-dark: #050208;
-    --stone-bg: #1a1624;
+    --void-bg: #2a1b3d;
+    --wood-dark: #3e2723;
+    --wood-light: #5d4037;
+    --parchment: #f3e5ab;
+    --parchment-shadow: #d7c9a3;
+    --gold: #ffc107;
+    --gold-shadow: #ff8f00;
+    --gem-red: #e53935;
+    --gem-blue: #039be5;
+    --gem-purple: #8e24aa;
+    --rune-glow: #00e5ff;
 }
 
 body {
-    background-color: var(--void-dark);
-    color: #d4c5a9;
+    background: var(--void-bg);
+    background-image:
+        radial-gradient(circle at 15% 50%, rgba(75, 0, 130, 0.4) 0%, transparent 50%),
+        radial-gradient(circle at 85% 30%, rgba(0, 50, 200, 0.2) 0%, transparent 50%);
+    color: #3e2723;
     font-family: 'MedievalSharp', cursive;
-    background: linear-gradient(125deg, #0f0c29, #302b63, #24243e, #000000);
-    background-size: 400% 400%;
-    animation: aurora 15s ease infinite;
-    cursor: crosshair;
+    min-height: 100vh;
+    overflow-x: hidden;
+    cursor: url('https://cdn.custom-cursor.com/db/cursor/32/Fantasy_Cursor.png'), auto;
 }
 
-@keyframes aurora {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-/* Magical Particle Dust Background */
+/* --- Magical Background --- */
 .dust-container {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     overflow: hidden;
     pointer-events: none;
     z-index: 0;
@@ -47,198 +37,242 @@ body {
 
 .dust-mote {
     position: absolute;
-    background: white;
+    background: radial-gradient(white, rgba(255, 255, 255, 0));
     border-radius: 50%;
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
-    opacity: 0.3;
-    animation: floatUp 15s infinite linear;
+    opacity: 0.6;
+    animation: floatMagic 8s infinite ease-in-out;
+    filter: drop-shadow(0 0 5px var(--rune-glow));
 }
 
-@keyframes floatUp {
+@keyframes floatMagic {
     0% {
-        transform: translateY(110vh) translateX(0) scale(0);
+        transform: translateY(100vh) scale(0);
         opacity: 0;
-    }
-
-    20% {
-        opacity: 0.8;
     }
 
     50% {
-        transform: translateY(50vh) translateX(20px) scale(1.5);
-        opacity: 0.4;
+        opacity: 0.8;
     }
 
     100% {
-        transform: translateY(-10vh) translateX(-20px) scale(0);
+        transform: translateY(-10vh) scale(1);
         opacity: 0;
     }
 }
 
-/* UI Components */
-.ancient-border {
-    border: 2px solid #4a3b5e;
-    border-image: linear-gradient(to bottom, #4a3b5e, var(--rune-gold), #4a3b5e) 1;
-    background: rgba(10, 5, 15, 0.85);
-    backdrop-filter: blur(12px);
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
-    transition: all 0.3s ease;
+/* --- Containers --- */
+
+/* The main "Board" or Tabletop feel */
+.playful-card {
+    background: var(--parchment);
+    border: 4px solid var(--wood-light);
+    border-radius: 8px;
+    /* Slightly rounded, worn edges */
+    box-shadow:
+        inset 0 0 60px rgba(62, 39, 35, 0.2),
+        /* Age stain */
+        5px 5px 15px rgba(0, 0, 0, 0.5);
+    /* Drop shadow */
+    position: relative;
+    padding: 2px;
 }
 
-.ancient-border:hover {
-    border-color: #9d00ff;
-    box-shadow: 0 0 40px rgba(157, 0, 255, 0.2);
+/* Corner decorations (simulated with pseudo-elements for gold aesthetic) */
+.playful-card::before,
+.playful-card::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background: var(--gold);
+    border: 1px solid var(--wood-dark);
+    box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    /* Bolts/Nails */
+    z-index: 2;
 }
 
+.playful-card::before {
+    top: 8px;
+    left: 8px;
+}
+
+.playful-card::after {
+    top: 8px;
+    right: 8px;
+}
+
+/* --- Typography --- */
 .title-text {
     font-family: 'Cinzel', serif;
-    background: linear-gradient(to bottom, #fff, var(--rune-gold));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 4px 15px rgba(255, 183, 0, 0.5);
+    font-weight: 700;
+    color: var(--gold);
+    text-shadow:
+        2px 2px 0px #000,
+        0 0 20px rgba(255, 193, 7, 0.6);
+    letter-spacing: 0.1em;
 }
 
-/* Rune Grid Buttons */
-.rune-stone {
-    background: linear-gradient(145deg, #1e1828, #130f1a);
-    border: 1px solid #332842;
-    color: #554466;
-    font-family: 'Cinzel', serif;
-    transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+h2,
+h3 {
+    color: var(--wood-dark);
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+}
+
+/* --- Buttons (RPG Style) --- */
+.rpg-btn {
+    background: linear-gradient(to bottom, #d7ccc8, #a1887f);
+    border: 2px solid var(--wood-dark);
+    border-radius: 4px;
+    color: var(--wood-dark);
+    font-family: 'MedievalSharp', cursive;
+    text-transform: uppercase;
+    font-weight: bold;
+    box-shadow:
+        inset 1px 1px 0px rgba(255, 255, 255, 0.4),
+        0 4px 0px var(--wood-dark),
+        0 5px 5px rgba(0, 0, 0, 0.3);
+    transition: all 0.1s;
     position: relative;
     overflow: hidden;
-    user-select: none;
 }
 
-/* Beat markers (every 4th step) background */
-.beat-marker {
-    background: linear-gradient(145deg, #251d30, #1a1525);
-    border-color: #4a3b5e;
+.rpg-btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 var(--wood-dark);
 }
 
-.rune-stone:active {
-    transform: scale(0.90);
+.rpg-btn-red {
+    background: linear-gradient(to bottom, #ffcdd2, #ef9a9a);
+    color: #b71c1c;
 }
 
+.rpg-btn-green {
+    background: linear-gradient(to bottom, #c8e6c9, #a5d6a7);
+    color: #1b5e20;
+}
+
+.rpg-btn-blue {
+    background: linear-gradient(to bottom, #b3e5fc, #81d4fa);
+    color: #01579b;
+}
+
+/* Gem Buttons for FX */
+.gem-btn {
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    box-shadow:
+        inset 0 0 10px rgba(0, 0, 0, 0.5),
+        inset 0 2px 4px rgba(255, 255, 255, 0.6),
+        /* Shine */
+        0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.1s;
+}
+
+.gem-btn:active {
+    transform: scale(0.95);
+    opacity: 0.9;
+}
+
+/* --- Rune Grid --- */
+.rune-stone {
+    background: #5d4037;
+    /* Dark stone/wood */
+    border: 2px solid #3e2723;
+    border-radius: 4px;
+    position: relative;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.8);
+    transition: all 0.1s;
+}
+
+/* Active Rune = Glowing Gem */
 .rune-stone.active {
-    border-color: var(--rune-gold);
-    color: var(--rune-gold);
-    background: linear-gradient(145deg, #2a1f35, #1a1220);
-    box-shadow: 0 0 10px rgba(255, 183, 0, 0.2), inset 0 0 10px rgba(255, 183, 0, 0.1);
-}
-
-.rune-stone.playing {
-    background: #fff !important;
-    color: #000 !important;
-    box-shadow: 0 0 30px #fff, 0 0 60px var(--rune-gold);
-    transform: scale(1.15);
-    border-color: #fff;
+    background: radial-gradient(circle at 30% 30%, var(--gold), #ff6f00);
+    border-color: #ffd54f;
+    box-shadow:
+        0 0 10px var(--gold),
+        inset 2px 2px 5px rgba(255, 255, 255, 0.8);
+    transform: scale(1.1);
     z-index: 10;
 }
 
-/* Row Labels */
-.row-label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    padding-right: 12px;
-    color: #887;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 1);
-    letter-spacing: 0.05em;
-    white-space: nowrap;
+.rune-stone.playing {
+    filter: brightness(1.5) contrast(1.2);
+    transform: scale(1.2);
 }
 
-/* Sliders */
+.beat-marker {
+    background: #4e342e;
+}
+
+/* Labels */
+.row-label {
+    font-size: 0.7rem;
+    color: var(--wood-dark);
+    font-weight: bold;
+    opacity: 0.8;
+}
+
+/* --- Sliders (Mana Bars) --- */
 input[type=range] {
     -webkit-appearance: none;
-    appearance: none;
     background: transparent;
-    width: 100%;
-}
-
-input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 18px;
-    width: 18px;
-    transform: rotate(45deg);
-    background: var(--rune-gold);
-    border: 2px solid #fff;
-    box-shadow: 0 0 15px var(--rune-gold);
-    cursor: pointer;
-    margin-top: -7px;
-    transition: transform 0.1s;
-}
-
-input[type=range]::-moz-range-thumb {
-    appearance: none;
-    height: 18px;
-    width: 18px;
-    transform: rotate(45deg);
-    background: var(--rune-gold);
-    border: 2px solid #fff;
-    box-shadow: 0 0 15px var(--rune-gold);
-    cursor: pointer;
-    border-radius: 0;
-    transition: transform 0.1s;
-}
-
-input[type=range]:active::-webkit-slider-thumb {
-    transform: rotate(45deg) scale(1.2);
-    background: #fff;
-}
-
-input[type=range]:active::-moz-range-thumb {
-    transform: rotate(45deg) scale(1.2);
-    background: #fff;
 }
 
 input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, #332842, var(--rune-purple), var(--rune-blue));
-    border-radius: 2px;
+    height: 10px;
+    background: #3e2723;
+    border-radius: 5px;
+    border: 1px solid #5d4037;
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.8);
 }
 
-input[type=range]::-moz-range-track {
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, #332842, var(--rune-purple), var(--rune-blue));
-    border-radius: 2px;
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    background: var(--gold);
+    border: 2px solid #fff;
+    border-radius: 50%;
+    margin-top: -6px;
+    box-shadow: 0 0 5px var(--gold);
+    cursor: pointer;
 }
 
-/* Scrying Pool */
+/* --- Visualizer Frame --- */
 .orb-glow {
-    box-shadow: 0 0 60px rgba(157, 0, 255, 0.15), inset 0 0 80px rgba(0, 0, 0, 0.9);
-    transition: box-shadow 0.5s;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 6px solid var(--wood-light);
+    border-radius: 50% / 10%;
+    /* Elliptical or just rounded box? Let's do rounded box with "Crystal" feel */
+    border-radius: 12px;
+    background: #000;
+    box-shadow:
+        0 0 15px rgba(0, 229, 255, 0.3),
+        inset 0 0 30px rgba(0, 0, 0, 0.9);
+    position: relative;
+    overflow: hidden;
 }
 
-/* Scrollbar */
+/* --- Scrollbar --- */
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #0f0a14;
+    background: var(--wood-dark);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #4a3b5e;
-    border-radius: 3px;
+    background: var(--gold);
+    border: 2px solid var(--wood-dark);
+    border-radius: 2px;
 }
 
-/* Utility for internal scrolling */
-.tablet-scroll-area {
-    scrollbar-width: thin;
-    scrollbar-color: #4a3b5e #0f0a14;
-}
-
-/* Modal */
+/* --- Modal --- */
 .modal-bg {
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
 }
