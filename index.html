@@ -4,14 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harmonix - Wizard's Workshop</title>
+    <title>Harmonix - Sonic Alchemy</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/tailwind.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body
-    class="min-h-screen w-full flex flex-col p-4 md:p-8 relative selection:bg-amber-500 selection:text-white overflow-x-hidden lg:overflow-hidden">
+    class="min-h-screen w-full flex flex-col p-4 md:p-8 relative selection:bg-cyan-500 selection:text-white overflow-x-hidden lg:overflow-hidden bg-void text-slate-200">
 
     <!-- Magic Dust -->
     <div id="dust-container" class="dust-container"></div>
@@ -21,51 +25,58 @@
 
     <!-- HELP MODAL -->
     <div id="help-modal"
-        class="fixed inset-0 z-[100] modal-bg flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="playful-card p-8 max-w-lg w-full relative transform scale-95 transition-transform duration-300"
+        class="fixed inset-0 z-[100] modal-bg flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur-sm">
+        <div class="playful-card p-8 max-w-lg w-full relative transform scale-95 transition-transform duration-300 border-none shadow-2xl bg-slate-900/90"
             id="help-content">
             <button id="close-help"
-                class="absolute top-4 right-4 text-2xl text-amber-900/50 hover:text-red-600 rounded-full w-8 h-8 flex items-center justify-center transition-colors">×</button>
-            <h2 class="text-3xl font-bold mb-4 text-center text-amber-800" style="font-family: 'MedievalSharp';">
-                Wizard's Manual</h2>
-            <div class="text-left space-y-4 text-amber-900/80 text-sm font-semibold">
-                <p><strong class="text-amber-700">Cast Your Spell:</strong><br>
-                    The <strong>Rune Grid</strong> (bottom right) is your spellbook. Ignite the runes to weave magic
-                    music!
+                class="absolute top-4 right-4 text-2xl text-slate-500 hover:text-white rounded-full w-8 h-8 flex items-center justify-center transition-colors">×</button>
+            <h2
+                class="text-3xl font-bold mb-4 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 font-display">
+                Sonic Manual</h2>
+            <div class="text-left space-y-4 text-slate-300 text-sm font-semibold font-body">
+                <p><strong class="text-cyan-400">Cast Your Spell:</strong><br>
+                    The <strong>Rune Grid</strong> (bottom right) is your controller. Activate pads to trigger sounds.
                 </p>
 
-                <p><strong class="text-blue-700">Horizontal (Time):</strong><br>
-                    The flow of magic loops endlessly.</p>
+                <p><strong class="text-blue-400">Horizontal (Time):</strong><br>
+                    The sequencer loops endlessly from left to right.</p>
 
-                <p><strong class="text-purple-700">Vertical (Elements):</strong><br>
-                    • <strong>Top Rows:</strong> Aether (High/Magic)<br>
-                    • <strong>Middle Rows:</strong> Earth (Mid/Bass)<br>
-                    ...and Thunder (Drums) at the bottom.</p>
+                <p><strong class="text-purple-400">Vertical (Elements):</strong><br>
+                    • <strong>Top Rows:</strong> Aether (Melody)<br>
+                    • <strong>Middle Rows:</strong> Earth (Bass)<br>
+                    • <strong>Bottom Rows:</strong> Thunder (Drums)</p>
 
-                <p class="text-xs italic text-center mt-6 text-amber-900/60">"Alchemy requires patience... and a good
-                    beat."</p>
+                <p><strong class="text-emerald-400">Keyboard Shortcuts:</strong><br>
+                    • <strong>Space</strong> — Play / Pause<br>
+                    • <strong>Esc</strong> — Clear Grid<br>
+                    • <strong>↑ / ↓</strong> — Tempo +/- 5 BPM<br>
+                    • <strong>← / →</strong> — Pitch Shift<br>
+                    • <strong>1-4</strong> — Toggle Effects<br>
+                    • <strong>R</strong> — Record / Stop</p>
+
+                <p class="text-xs italic text-center mt-6 text-slate-500">"Harmony in design, chaos in sound."</p>
             </div>
             <button id="close-help-btn"
-                class="mt-6 w-full rpg-btn rpg-btn-green py-2 rounded shadow-lg hover:brightness-110 active:scale-95 text-lg">
-                Enter Workshop
+                class="mt-6 w-full rpg-btn rpg-btn-green py-3 rounded shadow-lg hover:brightness-110 active:scale-95 text-lg tracking-wider">
+                Enter Studio
             </button>
         </div>
     </div>
 
     <!-- Start Overlay -->
     <div id="start-overlay"
-        class="absolute inset-0 z-[60] bg-slate-900/90 flex flex-col items-center justify-center cursor-pointer transition-opacity duration-1000 px-4 backdrop-blur-sm">
+        class="absolute inset-0 z-[60] bg-slate-900 flex flex-col items-center justify-center cursor-pointer transition-opacity duration-1000 px-4">
         <div class="relative group text-center">
             <div
-                class="absolute -inset-16 bg-gradient-to-r from-amber-500 to-purple-600 blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-1000 rounded-full animate-pulse">
+                class="absolute -inset-16 bg-gradient-to-r from-cyan-500 to-purple-600 blur-3xl opacity-20 group-hover:opacity-40 transition-opacity duration-1000 rounded-full animate-pulse">
             </div>
             <h1
-                class="text-6xl sm:text-7xl md:text-8xl font-black title-text mb-4 relative z-10 tracking-widest drop-shadow-xl transform hover:scale-105 transition-transform duration-300">
+                class="text-6xl sm:text-7xl md:text-8xl font-black title-text mb-4 relative z-10 tracking-tight drop-shadow-xl transform hover:scale-105 transition-transform duration-300">
                 HARMONIX</h1>
         </div>
         <p
-            class="text-xl sm:text-2xl text-amber-400 font-[MedievalSharp] tracking-widest mt-8 animate-bounce text-center drop-shadow-md">
-            TOUCH TO SUMMON</p>
+            class="text-xl sm:text-2xl text-cyan-400 font-display tracking-widest mt-8 animate-pulse text-center drop-shadow-md font-bold uppercase">
+            Click to Initialize</p>
     </div>
 
     <!-- Main Container -->
@@ -80,12 +91,12 @@
             <div class="playful-card p-6 relative group shrink-0">
                 <!-- Help Button -->
                 <button id="open-help"
-                    class="absolute top-4 right-4 text-amber-800 hover:text-amber-500 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold transition-all"
+                    class="absolute top-4 right-4 text-slate-500 hover:text-cyan-400 rounded-full w-8 h-8 flex items-center justify-center text-lg font-bold transition-all"
                     title="Open Manual">?</button>
 
                 <!-- Buy Me a Coffee Button -->
                 <a href="https://www.buymeacoffee.com/bennyaliston" target="_blank" rel="noopener noreferrer"
-                    class="absolute top-4 right-14 text-amber-800 hover:text-amber-600 rounded-full w-8 h-8 flex items-center justify-center transition-all hover:scale-110"
+                    class="absolute top-4 right-14 text-slate-500 hover:text-cyan-400 rounded-full w-8 h-8 flex items-center justify-center transition-all hover:scale-110"
                     title="Support the Wizard" aria-label="Buy me a coffee">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" class="w-5 h-5">
@@ -97,9 +108,9 @@
                 </a>
 
                 <div class="flex justify-between items-center mb-6 pr-24">
-                    <h2 class="text-2xl font-bold font-[MedievalSharp] text-amber-900">Bard's Lute</h2>
+                    <h2 class="text-2xl font-bold font-display tracking-widest text-slate-200 uppercase">SONIC CORE</h2>
                     <div id="bpm-display"
-                        class="text-amber-700 font-bold font-mono text-lg bg-amber-100/50 px-3 py-1 rounded border border-amber-900/20 shadow-inner">
+                        class="text-cyan-400 font-bold font-mono text-lg bg-slate-800/50 px-3 py-1 rounded border border-cyan-500/20 shadow-inner">
                         110 BPM</div>
                 </div>
 
@@ -107,6 +118,11 @@
                     <button id="btn-play"
                         class="flex-1 rpg-btn rpg-btn-green py-3 sm:py-4 text-xl tracking-widest shadow-lg">
                         CAST
+                    </button>
+                    <button id="btn-record" class="px-5 rpg-btn py-3 sm:py-4 text-sm shadow-lg tracking-wider"
+                        title="Record Audio"
+                        style="background: linear-gradient(to bottom, #ffcdd2, #ef9a9a); color: #b71c1c;">
+                        CAPTURE
                     </button>
                     <button id="btn-clear" class="px-5 rpg-btn rpg-btn-red py-3 sm:py-4 text-xl shadow-lg"
                         title="Dispel All Magic">
@@ -118,7 +134,7 @@
                 <div class="space-y-6 sm:space-y-8 px-2">
                     <div>
                         <div
-                            class="flex justify-between text-xs text-amber-800 mb-2 font-bold tracking-widest uppercase">
+                            class="flex justify-between text-[10px] text-slate-500 mb-2 font-bold tracking-widest uppercase">
                             <span>Time Flow</span>
                             <span>Tempo</span>
                         </div>
@@ -126,7 +142,7 @@
                     </div>
                     <div>
                         <div
-                            class="flex justify-between text-xs text-amber-800 mb-2 font-bold tracking-widest uppercase">
+                            class="flex justify-between text-[10px] text-slate-500 mb-2 font-bold tracking-widest uppercase">
                             <span>Harmony</span>
                             <span>Pitch</span>
                         </div>
@@ -135,28 +151,104 @@
                 </div>
             </div>
 
+            <!-- Alchemist's Mix (Volume Controls) -->
+            <div class="playful-card p-6 flex-col shrink-0">
+                <h3 class="text-xl text-center font-bold font-display mb-4 sm:mb-6 text-slate-200">
+                    Mixer</h3>
+                <div class="space-y-4 px-2">
+                    <div>
+                        <div
+                            class="flex justify-between text-xs text-slate-400 mb-1 font-bold tracking-widest uppercase">
+                            <span>Aether</span><span>Melody</span>
+                        </div>
+                        <input type="range" id="vol-melody" min="0" max="100" value="80" class="w-full accent-cyan-400">
+                    </div>
+                    <div>
+                        <div
+                            class="flex justify-between text-xs text-slate-400 mb-1 font-bold tracking-widest uppercase">
+                            <span>Earth</span><span>Bass</span>
+                        </div>
+                        <input type="range" id="vol-bass" min="0" max="100" value="80" class="w-full accent-violet-400">
+                    </div>
+                    <div>
+                        <div
+                            class="flex justify-between text-xs text-slate-400 mb-1 font-bold tracking-widest uppercase">
+                            <span>Snap</span><span>Snare</span>
+                        </div>
+                        <input type="range" id="vol-snare" min="0" max="100" value="80"
+                            class="w-full accent-emerald-400">
+                    </div>
+                    <div>
+                        <div
+                            class="flex justify-between text-xs text-slate-400 mb-1 font-bold tracking-widest uppercase">
+                            <span>Thunder</span><span>Kick</span>
+                        </div>
+                        <input type="range" id="vol-kick" min="0" max="100" value="80" class="w-full accent-blue-400">
+                    </div>
+                </div>
+            </div>
+
             <!-- Spellbook (DJ Effects) -->
             <div class="playful-card p-6 flex-col shrink-0">
-                <h3 class="text-xl text-center font-bold font-[MedievalSharp] mb-4 sm:mb-6 text-amber-900">
-                    Potions & Scrolls</h3>
+                <h3 class="text-xl text-center font-bold font-display mb-4 sm:mb-6 text-slate-200">
+                    Effects</h3>
 
                 <div class="grid grid-cols-2 gap-3 sm:gap-4">
                     <button id="fx-verb"
-                        class="gem-btn h-16 sm:h-20 bg-gradient-to-br from-purple-500 to-purple-700 hover:from-purple-400 hover:to-purple-600 font-[Cinzel] font-bold">
-                        CAVERN<br><span class="text-[10px] opacity-70 tracking-widest">REVERB</span>
+                        class="gem-btn h-16 sm:h-20 font-display font-bold text-slate-200 border-purple-500/20">
+                        SPACE<br><span class="text-[10px] opacity-60 tracking-widest font-body">REVERB</span>
                     </button>
                     <button id="fx-filter"
-                        class="gem-btn h-16 sm:h-20 bg-gradient-to-br from-blue-500 to-blue-700 hover:from-blue-400 hover:to-blue-600 font-[Cinzel] font-bold">
-                        MUFFLE<br><span class="text-[10px] opacity-70 tracking-widest">FILTER</span>
+                        class="gem-btn h-16 sm:h-20 font-display font-bold text-slate-200 border-blue-500/20">
+                        MUFFLE<br><span class="text-[10px] opacity-60 tracking-widest font-body">FILTER</span>
                     </button>
                     <button id="fx-delay"
-                        class="gem-btn h-16 sm:h-20 bg-gradient-to-br from-teal-500 to-teal-700 hover:from-teal-400 hover:to-teal-600 font-[Cinzel] font-bold">
-                        ECHO<br><span class="text-[10px] opacity-70 tracking-widest">DELAY</span>
+                        class="gem-btn h-16 sm:h-20 font-display font-bold text-slate-200 border-teal-500/20">
+                        ECHO<br><span class="text-[10px] opacity-60 tracking-widest font-body">DELAY</span>
                     </button>
                     <button id="fx-dist"
-                        class="gem-btn h-16 sm:h-20 bg-gradient-to-br from-red-500 to-red-700 hover:from-red-400 hover:to-red-600 font-[Cinzel] font-bold">
-                        CURSE<br><span class="text-[10px] opacity-70 tracking-widest">DISTORT</span>
+                        class="gem-btn h-16 sm:h-20 font-display font-bold text-slate-200 border-red-500/20">
+                        GRIT<br><span class="text-[10px] opacity-60 tracking-widest font-body">DISTORT</span>
                     </button>
+                </div>
+            </div>
+
+            <!-- Grimoire (Save/Load Patterns) -->
+            <div class="playful-card p-6 flex-col shrink-0">
+                <h3 class="text-xl text-center font-bold font-display mb-4 sm:mb-6 text-slate-200">
+                    Library</h3>
+                <div class="flex gap-2 mb-4">
+                    <input type="text" id="pattern-name" placeholder="Pattern name..."
+                        class="flex-1 px-3 py-2 rounded-lg border border-slate-700 bg-slate-800 text-slate-200 font-body text-sm focus:outline-none focus:border-cyan-500 placeholder-slate-500 transition-colors"
+                        maxlength="20">
+                    <button id="btn-save-pattern" class="rpg-btn rpg-btn-blue px-4 py-2 text-sm">SAVE</button>
+                </div>
+                <div id="pattern-list" class="space-y-2 max-h-48 overflow-y-auto tablet-scroll-area">
+                    <!-- JS populates pattern list -->
+                </div>
+            </div>
+
+            <!-- Song Scroll (Pattern Chaining) -->
+            <div class="playful-card p-6 flex-col shrink-0">
+                <h3 class="text-xl text-center font-bold font-display mb-4 sm:mb-6 text-slate-200">
+                    Arrangement</h3>
+
+                <!-- Pattern Tabs -->
+                <div class="mb-4">
+                    <div class="text-xs text-slate-400 font-bold tracking-widest uppercase mb-2">Patterns</div>
+                    <div id="pattern-tabs" class="flex flex-wrap gap-2">
+                        <!-- JS populates -->
+                    </div>
+                </div>
+
+                <!-- Chain Editor -->
+                <div>
+                    <div class="text-xs text-slate-400 font-bold tracking-widest uppercase mb-2">Chain Order</div>
+                    <div id="chain-editor"
+                        class="flex flex-wrap gap-1.5 min-h-[36px] bg-slate-800/50 rounded-lg p-2 border border-slate-700">
+                        <!-- JS populates -->
+                    </div>
+                    <div class="text-[10px] text-slate-500 mt-1 italic">Click pattern tabs to add to chain</div>
                 </div>
             </div>
         </div>
@@ -165,16 +257,17 @@
         <div class="lg:w-2/3 flex flex-col gap-4 lg:gap-6 h-auto lg:h-full overflow-visible shrink-0 p-2 md:p-4">
 
             <!-- Scrying Pool (Visualizer) -->
-            <div class="relative orb-glow min-h-[250px] sm:min-h-[300px] md:min-h-[350px] shrink-0 group cursor-none">
+            <div
+                class="relative orb-glow min-h-[250px] sm:min-h-[300px] md:min-h-[350px] shrink-0 group cursor-none border-slate-700/50">
                 <div id="viz-container" class="absolute inset-0 w-full h-full z-0 opacity-80 mix-blend-screen"></div>
             </div>
 
             <!-- The Grid (Stone Tablet) -->
-            <div class="playful-card p-4 sm:p-6 relative flex flex-col flex-1 min-h-0 bg-[#eefeec]">
+            <div class="playful-card p-4 sm:p-6 relative flex flex-col flex-1 min-h-0 bg-slate-900/40">
                 <div class="flex justify-between items-end mb-4 px-2 relative z-10 shrink-0">
-                    <h3 class="text-lg font-bold tracking-wide font-[MedievalSharp] text-amber-900">RUNE GRID</h3>
+                    <h3 class="text-lg font-bold tracking-wide font-display text-slate-200">SEQUENCER</h3>
                     <div
-                        class="text-xs text-amber-800 font-mono bg-amber-100 px-2 py-1 rounded border border-amber-200 shadow-sm">
+                        class="text-xs text-cyan-400 font-mono bg-slate-800/80 px-2 py-1 rounded border border-cyan-500/20 shadow-sm shadow-cyan-500/10">
                         C MINOR DORIAN</div>
                 </div>
 
@@ -196,6 +289,14 @@
         // 1. GLOBAL STATE DEFINITIONS
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         let ctx, masterBus, reverbNode, compressor, delayNode, delayFeedback, distortionNode, droneOsc, droneGain, windGain;
+        let melodyGain, bassGain, snareGain, kickGain;
+        let isRecording = false, mediaRecorder = null, recordedChunks = [], mediaStreamDest = null;
+
+        // Pattern Chaining
+        let patterns = [{ name: 'A', grid: Array(8).fill().map(() => Array(16).fill(false)) }];
+        let currentPatternIndex = 0;
+        let chain = [0];
+        let chainPosition = 0;
         let isPlaying = false;
         let tempo = 110;
         let currentStep = 0;
@@ -204,11 +305,201 @@
         let timerID;
         let isReverbOn = true, isFilterOn = false, isDelayOn = false, isDistortionOn = false;
         const NUM_ROWS = 8;
-        let grid = Array(NUM_ROWS).fill().map(() => Array(16).fill(false));
+        let grid = patterns[0].grid;
         const noteFreqs = [523.25, 466.16, 392.00, 349.23, 311.13, 261.63];
         let globalDetune = 0;
         let analyser = null;
         let dataArray = null;
+
+        // Preset Patterns
+        const PRESET_PATTERNS = [
+            {
+                name: "Wizard's March", preset: true,
+                grid: (() => {
+                    const g = Array(8).fill().map(() => Array(16).fill(false));
+                    g[7][0] = true; g[7][4] = true; g[7][8] = true; g[7][12] = true; g[7][14] = true;
+                    g[6][4] = true; g[6][12] = true; g[5][0] = true; g[4][2] = true; g[2][4] = true;
+                    g[0][6] = true; g[2][8] = true; g[4][10] = true; g[5][12] = true; g[4][14] = true;
+                    return g;
+                })(),
+                tempo: 110, pitch: 0, effects: { reverb: true, filter: false, delay: false, distortion: false }
+            },
+            {
+                name: "Elven Dance", preset: true,
+                grid: (() => {
+                    const g = Array(8).fill().map(() => Array(16).fill(false));
+                    g[0][0] = true; g[0][4] = true; g[0][8] = true; g[0][12] = true;
+                    g[1][2] = true; g[1][6] = true; g[1][10] = true; g[1][14] = true;
+                    g[2][0] = true; g[2][8] = true; g[4][4] = true; g[4][12] = true;
+                    g[6][4] = true; g[6][12] = true; g[7][0] = true; g[7][8] = true;
+                    return g;
+                })(),
+                tempo: 130, pitch: 200, effects: { reverb: true, filter: false, delay: true, distortion: false }
+            },
+            {
+                name: "Dragon's Roar", preset: true,
+                grid: (() => {
+                    const g = Array(8).fill().map(() => Array(16).fill(false));
+                    g[7][0] = true; g[7][2] = true; g[7][4] = true; g[7][6] = true; g[7][8] = true; g[7][10] = true; g[7][12] = true; g[7][14] = true;
+                    g[6][2] = true; g[6][6] = true; g[6][10] = true; g[6][14] = true;
+                    g[5][0] = true; g[5][4] = true; g[5][8] = true; g[5][12] = true;
+                    g[4][0] = true; g[4][8] = true; g[3][4] = true; g[3][12] = true;
+                    return g;
+                })(),
+                tempo: 90, pitch: -400, effects: { reverb: true, filter: true, delay: false, distortion: true }
+            }
+        ];
+
+        function getSavedPatterns() {
+            try { return JSON.parse(localStorage.getItem('harmonix-patterns') || '[]'); }
+            catch { return []; }
+        }
+
+        function savePatternsToStorage(patterns) {
+            localStorage.setItem('harmonix-patterns', JSON.stringify(patterns));
+        }
+
+        function loadPattern(pattern) {
+            grid = pattern.grid.map(row => [...row]);
+            patterns[currentPatternIndex].grid = grid;
+            tempo = pattern.tempo;
+            globalDetune = pattern.pitch;
+            document.getElementById('tempo-slider').value = tempo;
+            document.getElementById('bpm-display').innerText = `${tempo} BPM`;
+            document.getElementById('pitch-slider').value = globalDetune;
+
+            // Restore effects
+            const setEffect = (btn, flag, current) => {
+                if (flag !== current && btn) btn.click();
+            };
+            setEffect(document.getElementById('fx-verb'), pattern.effects.reverb, isReverbOn);
+            setEffect(document.getElementById('fx-filter'), pattern.effects.filter, isFilterOn);
+            setEffect(document.getElementById('fx-delay'), pattern.effects.delay, isDelayOn);
+            setEffect(document.getElementById('fx-dist'), pattern.effects.distortion, isDistortionOn);
+
+            renderGrid();
+            updateGridVisuals();
+        }
+
+        function renderPatternList() {
+            const list = document.getElementById('pattern-list');
+            if (!list) return;
+            list.innerHTML = '';
+            const allPatterns = [...PRESET_PATTERNS, ...getSavedPatterns()];
+            allPatterns.forEach((p, i) => {
+                const row = document.createElement('div');
+                row.className = 'flex items-center gap-2 bg-slate-800/60 rounded px-3 py-2 border border-slate-700/50 hover:bg-slate-800 transition-colors';
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'flex-1 text-sm font-bold text-slate-200 font-display truncate tracking-wide';
+                nameSpan.textContent = p.name;
+                if (p.preset) {
+                    const badge = document.createElement('span');
+                    badge.className = 'text-[9px] bg-cyan-900/50 text-cyan-300 border border-cyan-500/30 px-1.5 py-0.5 rounded font-mono uppercase tracking-wider ml-2';
+                    badge.textContent = 'preset';
+                    nameSpan.appendChild(badge);
+                }
+                const loadBtn = document.createElement('button');
+                loadBtn.className = 'rpg-btn rpg-btn-green px-3 py-1 text-[10px] tracking-widest';
+                loadBtn.textContent = 'LOAD';
+                loadBtn.onclick = () => loadPattern(p);
+                row.appendChild(nameSpan);
+                row.appendChild(loadBtn);
+                if (!p.preset) {
+                    const delBtn = document.createElement('button');
+                    delBtn.className = 'rpg-btn rpg-btn-red px-2 py-1 text-[10px] ml-1';
+                    delBtn.textContent = '×';
+                    delBtn.onclick = () => {
+                        const saved = getSavedPatterns();
+                        saved.splice(i - PRESET_PATTERNS.length, 1);
+                        savePatternsToStorage(saved);
+                        renderPatternList();
+                    };
+                    row.appendChild(delBtn);
+                }
+                list.appendChild(row);
+            });
+        }
+
+        // Pattern Chaining Functions
+        function switchToPattern(index) {
+            patterns[currentPatternIndex].grid = grid;
+            currentPatternIndex = index;
+            grid = patterns[index].grid;
+            renderGrid();
+            updateGridVisuals();
+            renderChainUI();
+        }
+
+        function addPattern() {
+            if (patterns.length >= 8) return;
+            const names = 'ABCDEFGH';
+            patterns.push({ name: names[patterns.length], grid: Array(8).fill().map(() => Array(16).fill(false)) });
+            renderChainUI();
+        }
+
+        function renderChainUI() {
+            const tabsContainer = document.getElementById('pattern-tabs');
+            if (!tabsContainer) return;
+            tabsContainer.innerHTML = '';
+            patterns.forEach((p, i) => {
+                const tab = document.createElement('button');
+                const isActive = i === currentPatternIndex;
+                const isPlayingNow = isPlaying && chain[chainPosition] === i;
+                tab.className = `px-3 py-1.5 rounded font-display font-bold text-sm border transition-all ${isActive
+                    ? 'bg-cyan-600 text-white border-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)]'
+                    : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700 hover:text-slate-200'
+                    }${isPlayingNow ? ' ring-2 ring-emerald-400 ring-offset-1 ring-offset-slate-900' : ''}`;
+                tab.textContent = p.name;
+                tab.addEventListener('click', (e) => {
+                    if (e.shiftKey) {
+                        chain.push(i);
+                        renderChainUI();
+                    } else {
+                        switchToPattern(i);
+                    }
+                });
+                tab.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    chain.push(i);
+                    renderChainUI();
+                });
+                tabsContainer.appendChild(tab);
+            });
+
+            if (patterns.length < 8) {
+                const addBtn = document.createElement('button');
+                addBtn.className = 'px-3 py-1.5 rounded font-bold text-sm border-2 border-dashed border-cyan-500/30 text-cyan-500/50 hover:bg-cyan-900/20 hover:text-cyan-400 transition-all';
+                addBtn.textContent = '+';
+                addBtn.onclick = addPattern;
+                tabsContainer.appendChild(addBtn);
+            }
+
+            const chainContainer = document.getElementById('chain-editor');
+            if (!chainContainer) return;
+            chainContainer.innerHTML = '';
+            chain.forEach((patIdx, ci) => {
+                const badge = document.createElement('span');
+                const isCurrentInChain = isPlaying && ci === chainPosition;
+                badge.className = `inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-bold font-display cursor-pointer transition-all border ${isCurrentInChain
+                    ? 'bg-emerald-600 text-white border-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.4)]'
+                    : 'bg-slate-700 text-slate-300 border-slate-600 hover:bg-slate-600'
+                    }`;
+                badge.textContent = patterns[patIdx]?.name || '?';
+                const removeBtn = document.createElement('span');
+                removeBtn.textContent = '\u00d7';
+                removeBtn.className = 'ml-0.5 text-xs opacity-60 hover:opacity-100 cursor-pointer';
+                removeBtn.onclick = (e) => {
+                    e.stopPropagation();
+                    if (chain.length > 1) {
+                        chain.splice(ci, 1);
+                        if (chainPosition >= chain.length) chainPosition = 0;
+                        renderChainUI();
+                    }
+                };
+                badge.appendChild(removeBtn);
+                chainContainer.appendChild(badge);
+            });
+        }
 
         // FX & Visuals State
         let particles = [];
@@ -224,6 +515,7 @@
         const startOverlay = document.getElementById('start-overlay');
         const btnPlay = document.getElementById('btn-play');
         const btnClear = document.getElementById('btn-clear');
+        const btnRecord = document.getElementById('btn-record');
         const vizContainer = document.getElementById('viz-container');
 
         // 2. HELPER CLASSES
@@ -237,7 +529,7 @@
                 } else {
                     // Magic Sparkles
                     const hue = Math.random() * 60 + 180; // Blue/Cyan/Purple range
-                    this.color = type === 'trail' ? `hsla(${hue}, 100%, 70%, 1)` : '#FFD700'; // Gold sparks
+                    this.color = type === 'trail' ? `hsla(${hue}, 100%, 70%, 1)` : '#cbd5e1'; // Silver/White sparks
                 }
                 const angle = Math.random() * Math.PI * 2;
                 const speed = type === 'spark' ? Math.random() * 5 + 2 : Math.random() * 0.8;
@@ -297,7 +589,7 @@
                 if (this.y < 50 || this.y > canvasHeight - 50) this.vy *= -1;
 
                 this.pluseTimer += 0.05;
-                this.hue = 180 + Math.sin(this.pluseTimer * 0.5) * 40; // Cyan to Blue/Purple
+                this.hue = 220 + Math.sin(this.pluseTimer * 0.5) * 40; // Cyan to Purple range
             }
 
             draw(ctx) {
@@ -375,38 +667,33 @@
 
         function renderGrid() {
             const container = document.getElementById('sequencer-grid'); container.innerHTML = '';
-            const rowLabels = ["AETHER 1", "AETHER 2", "EARTH 1", "EARTH 2", "FIRE 1", "FIRE 2", "SNAP", "THUNDER"];
+            const rowLabels = ["LEAD 1", "LEAD 2", "PAD 1", "PAD 2", "BASS 1", "BASS 2", "SNAP", "KICK"];
             for (let r = 0; r < NUM_ROWS; r++) {
-                const label = document.createElement('div'); label.className = 'row-label col-span-1 text-right flex items-center justify-end'; label.innerText = rowLabels[r]; container.appendChild(label);
+                const label = document.createElement('div'); label.className = 'row-label col-span-1 text-right flex items-center justify-end text-[10px] sm:text-xs font-bold text-slate-500 font-display tracking-widest'; label.innerText = rowLabels[r]; container.appendChild(label);
                 for (let s = 0; s < 16; s++) {
                     const btn = document.createElement('button'); btn.id = `cell-${r}-${s}`;
-                    btn.className = 'rune-stone flex items-center justify-center text-[10px] group';
-                    // Runes
-                    const runes = ["ᚠ", "ᚢ", "ᚦ", "ᚨ", "ᚱ", "ᚲ", "ᚷ", "ᚹ", "ᚺ", "ᚾ", "ᛁ", "ᛃ", "ᛇ", "ᛈ", "ᛉ", "ᛊ"];
+                    btn.className = 'rune-stone flex items-center justify-center text-[10px] group transition-all duration-200';
 
                     if (s % 4 === 0) btn.classList.add('beat-marker');
 
-                    // Only show rune on hover or active to keep it clean? Or always? Let's show faint rune.
-                    btn.innerText = runes[s % runes.length];
-                    btn.style.color = "rgba(255,193,7,0.3)";
+                    // Removed Rune Text - just clean pads
+                    btn.innerText = "";
 
                     if (grid[r][s]) {
                         btn.classList.add('active');
-                        btn.style.color = "#3e2723";
                     }
 
                     btn.onmousedown = (e) => {
                         grid[r][s] = !grid[r][s]; btn.classList.toggle('active');
                         const rect = btn.getBoundingClientRect();
-                        spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, grid[r][s] ? '#FFD700' : '#4DB6AC');
-                        if (grid[r][s]) btn.style.color = "#3e2723"; else btn.style.color = "rgba(255,193,7,0.3)";
+                        spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, grid[r][s] ? '#a78bfa' : '#22d3ee');
 
                         if (!isPlaying && grid[r][s]) {
                             if (ctx && ctx.state === 'suspended') ctx.resume();
                             if (ctx) {
-                                if (r === 7) playDrum('kick', ctx.currentTime);
-                                else if (r === 6) playDrum('snare', ctx.currentTime);
-                                else playSynth(noteFreqs[r], ctx.currentTime, 0.2);
+                                if (r === 7) playDrum('kick', ctx.currentTime, kickGain);
+                                else if (r === 6) playDrum('snare', ctx.currentTime, snareGain);
+                                else playSynth(noteFreqs[r], ctx.currentTime, 0.2, r < 2 ? melodyGain : bassGain);
                             }
                         }
                     };
@@ -421,10 +708,8 @@
                     const btn = document.getElementById(`cell-${r}-${s}`);
                     if (grid[r][s]) {
                         btn.classList.add('active');
-                        btn.style.color = "#3e2723";
                     } else {
                         btn.classList.remove('active');
-                        btn.style.color = "rgba(255,193,7,0.3)";
                     }
                 }
             }
@@ -458,8 +743,9 @@
             windGain.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 4);
         }
 
-        function playDrum(type, time) {
+        function playDrum(type, time, channelGain) {
             const osc = ctx.createOscillator(); const gain = ctx.createGain();
+            const outGain = channelGain || ctx.createGain();
             if (type === 'kick') {
                 osc.frequency.setValueAtTime(130, time); osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
                 gain.gain.setValueAtTime(1.0, time); gain.gain.exponentialRampToValueAtTime(0.001, time + 0.5);
@@ -471,17 +757,19 @@
                 const filter = ctx.createBiquadFilter(); filter.type = "bandpass"; filter.frequency.value = 1200;
                 gain.gain.setValueAtTime(0.6, time); gain.gain.exponentialRampToValueAtTime(0.001, time + 0.25);
                 noise.connect(filter); filter.connect(gain);
-                if (isReverbOn) { const revSend = ctx.createGain(); revSend.gain.value = 0.35; gain.connect(revSend); revSend.connect(reverbNode); }
-                if (isDistortionOn) gain.connect(distortionNode); else gain.connect(compressor);
-                if (isDelayOn) gain.connect(delayNode);
+                gain.connect(outGain);
+                if (isReverbOn) { const revSend = ctx.createGain(); revSend.gain.value = 0.35; outGain.connect(revSend); revSend.connect(reverbNode); }
+                if (isDistortionOn) outGain.connect(distortionNode); else outGain.connect(compressor);
+                if (isDelayOn) outGain.connect(delayNode);
                 noise.start(time); return;
             }
-            if (isDistortionOn) gain.connect(distortionNode); else gain.connect(compressor);
-            if (isDelayOn) { const kickDelaySend = ctx.createGain(); kickDelaySend.gain.value = 0.3; gain.connect(kickDelaySend); kickDelaySend.connect(delayNode); }
+            gain.connect(outGain);
+            if (isDistortionOn) outGain.connect(distortionNode); else outGain.connect(compressor);
+            if (isDelayOn) { const kickDelaySend = ctx.createGain(); kickDelaySend.gain.value = 0.3; outGain.connect(kickDelaySend); kickDelaySend.connect(delayNode); }
             osc.start(time); osc.stop(time + 0.5);
         }
 
-        function playSynth(freq, time, length = 0.4) {
+        function playSynth(freq, time, length = 0.4, channelGain) {
             const osc1 = ctx.createOscillator(); const osc2 = ctx.createOscillator(); const osc3 = ctx.createOscillator();
             osc1.type = 'sawtooth'; osc2.type = 'sawtooth'; osc3.type = 'triangle';
             osc1.frequency.value = freq; osc2.frequency.value = freq; osc3.frequency.value = freq / 2;
@@ -490,16 +778,28 @@
             if (!isFilterOn) { filter.frequency.exponentialRampToValueAtTime(5000, time + 0.05); filter.frequency.exponentialRampToValueAtTime(500, time + length); }
             const gain = ctx.createGain(); gain.gain.setValueAtTime(0, time); gain.gain.linearRampToValueAtTime(0.12, time + 0.05); gain.gain.exponentialRampToValueAtTime(0.001, time + length + 0.1);
             osc1.connect(filter); osc2.connect(filter); osc3.connect(filter); filter.connect(gain);
-            if (isReverbOn) { const revSend = ctx.createGain(); revSend.gain.value = 0.5; gain.connect(revSend); revSend.connect(reverbNode); }
-            if (isDistortionOn) gain.connect(distortionNode); else gain.connect(compressor);
-            if (isDelayOn) gain.connect(delayNode);
+            const outGain = channelGain || gain;
+            if (channelGain) gain.connect(outGain);
+            if (isReverbOn) { const revSend = ctx.createGain(); revSend.gain.value = 0.5; outGain.connect(revSend); revSend.connect(reverbNode); }
+            if (isDistortionOn) outGain.connect(distortionNode); else outGain.connect(compressor);
+            if (isDelayOn) outGain.connect(delayNode);
             osc1.start(time); osc2.start(time); osc3.start(time);
             osc1.stop(time + length + 0.5); osc2.stop(time + length + 0.5); osc3.stop(time + length + 0.5);
         }
 
         function nextNote() {
             const secondsPerBeat = 60.0 / tempo; nextNoteTime += 0.25 * secondsPerBeat;
-            currentStep++; if (currentStep === 16) currentStep = 0;
+            currentStep++;
+            if (currentStep === 16) {
+                currentStep = 0;
+                // Advance chain
+                if (chain.length > 1) {
+                    chainPosition = (chainPosition + 1) % chain.length;
+                    const nextPatIdx = chain[chainPosition];
+                    grid = patterns[nextPatIdx].grid;
+                    renderChainUI();
+                }
+            }
         }
 
         function scheduleNote(step, time) {
@@ -510,9 +810,14 @@
                     if (grid[r][step]) btn.classList.add('playing');
                 }
             });
-            if (grid[7][step]) playDrum('kick', time);
-            if (grid[6][step]) playDrum('snare', time);
-            for (let i = 0; i < 6; i++) if (grid[i][step]) playSynth(noteFreqs[i], time);
+            if (grid[7][step]) playDrum('kick', time, kickGain);
+            if (grid[6][step]) playDrum('snare', time, snareGain);
+            for (let i = 0; i < 6; i++) {
+                if (grid[i][step]) {
+                    const chGain = i < 2 ? melodyGain : bassGain;
+                    playSynth(noteFreqs[i], time, 0.4, chGain);
+                }
+            }
         }
 
         function scheduler() {
@@ -527,6 +832,12 @@
             compressor.threshold.value = -15; compressor.ratio.value = 10;
             masterBus = ctx.createGain();
             masterBus.gain.value = 0.7;
+
+            // Channel gain nodes
+            melodyGain = ctx.createGain(); melodyGain.gain.value = 0.8;
+            bassGain = ctx.createGain(); bassGain.gain.value = 0.8;
+            snareGain = ctx.createGain(); snareGain.gain.value = 0.8;
+            kickGain = ctx.createGain(); kickGain.gain.value = 0.8;
 
             reverbNode = ctx.createConvolver();
             const rate = ctx.sampleRate;
@@ -548,12 +859,18 @@
             distortionNode.connect(compressor);
 
             compressor.connect(masterBus); reverbNode.connect(masterBus); masterBus.connect(ctx.destination);
+
+            // MediaStream for recording
+            mediaStreamDest = ctx.createMediaStreamDestination();
+            masterBus.connect(mediaStreamDest);
+
             initDrone();
 
             grid[7][0] = true; grid[7][4] = true; grid[7][8] = true; grid[7][12] = true; grid[7][14] = true;
             grid[6][4] = true; grid[6][12] = true;
             grid[5][0] = true; grid[4][2] = true; grid[2][4] = true; grid[0][6] = true;
             grid[2][8] = true; grid[4][10] = true; grid[5][12] = true; grid[4][14] = true;
+            patterns[0].grid = grid;
             renderGrid(); updateGridVisuals();
 
             const vizAnalyser = ctx.createAnalyser(); vizAnalyser.fftSize = 512;
@@ -640,22 +957,94 @@
                 btnPlay.innerText = "HALT";
                 btnPlay.classList.add('rpg-btn-red');
                 btnPlay.classList.remove('rpg-btn-green');
+                chainPosition = 0;
+                grid = patterns[chain[0]].grid;
                 nextNoteTime = ctx.currentTime + 0.1; currentStep = 0; scheduler();
+                renderChainUI();
             } else {
                 btnPlay.innerText = "CAST";
                 btnPlay.classList.add('rpg-btn-green');
                 btnPlay.classList.remove('rpg-btn-red');
                 cancelAnimationFrame(timerID);
+                renderChainUI();
             }
         });
 
         btnClear.addEventListener('click', () => {
             const rect = btnClear.getBoundingClientRect(); spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#F44336');
-            grid = grid.map(row => row.fill(false)); updateGridVisuals();
+            for (let r = 0; r < NUM_ROWS; r++) grid[r].fill(false);
+            updateGridVisuals();
+        });
+
+        // Record Button
+        btnRecord.addEventListener('click', () => {
+            if (!ctx) initAudio();
+            if (ctx.state === 'suspended') ctx.resume();
+            const rect = btnRecord.getBoundingClientRect();
+
+            if (!isRecording) {
+                // Start recording
+                recordedChunks = [];
+                const mimeType = MediaRecorder.isTypeSupported('audio/webm;codecs=opus') ? 'audio/webm;codecs=opus' : 'audio/webm';
+                mediaRecorder = new MediaRecorder(mediaStreamDest.stream, { mimeType });
+                mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) recordedChunks.push(e.data); };
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(recordedChunks, { type: mediaRecorder.mimeType });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url; a.download = 'harmonix-spell.webm';
+                    document.body.appendChild(a); a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                };
+                mediaRecorder.start();
+                isRecording = true;
+                btnRecord.innerHTML = 'SEALING<span class="inline-block w-2 h-2 bg-red-600 rounded-full ml-2 animate-pulse"></span>';
+                btnRecord.style.background = 'linear-gradient(to bottom, #ef9a9a, #e53935)';
+                btnRecord.style.color = '#fff';
+                spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#e53935');
+            } else {
+                // Stop recording
+                mediaRecorder.stop();
+                isRecording = false;
+                btnRecord.innerHTML = 'CAPTURE';
+                btnRecord.style.background = 'linear-gradient(to bottom, #ffcdd2, #ef9a9a)';
+                btnRecord.style.color = '#b71c1c';
+                spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#4CAF50');
+            }
         });
 
         document.getElementById('tempo-slider').addEventListener('input', (e) => { tempo = parseInt(e.target.value); document.getElementById('bpm-display').innerText = `${tempo} BPM`; });
         document.getElementById('pitch-slider').addEventListener('input', (e) => globalDetune = parseInt(e.target.value));
+
+        // Volume Mix Controls
+        document.getElementById('vol-melody').addEventListener('input', (e) => { if (melodyGain) melodyGain.gain.value = parseInt(e.target.value) / 100; });
+        document.getElementById('vol-bass').addEventListener('input', (e) => { if (bassGain) bassGain.gain.value = parseInt(e.target.value) / 100; });
+        document.getElementById('vol-snare').addEventListener('input', (e) => { if (snareGain) snareGain.gain.value = parseInt(e.target.value) / 100; });
+        document.getElementById('vol-kick').addEventListener('input', (e) => { if (kickGain) kickGain.gain.value = parseInt(e.target.value) / 100; });
+
+        // Save Pattern
+        document.getElementById('btn-save-pattern').addEventListener('click', () => {
+            const nameInput = document.getElementById('pattern-name');
+            const name = nameInput.value.trim() || `Spell ${Date.now() % 10000}`;
+            const saved = getSavedPatterns();
+            saved.push({
+                name,
+                grid: grid.map(row => [...row]),
+                tempo, pitch: globalDetune,
+                effects: { reverb: isReverbOn, filter: isFilterOn, delay: isDelayOn, distortion: isDistortionOn }
+            });
+            savePatternsToStorage(saved);
+            nameInput.value = '';
+            renderPatternList();
+            const btn = document.getElementById('btn-save-pattern');
+            const rect = btn.getBoundingClientRect();
+            spawnSparks(rect.left + rect.width / 2, rect.top + rect.height / 2, '#3b82f6');
+        });
+
+        // Render pattern list and chain UI on load
+        renderPatternList();
+        renderChainUI();
 
         const btnVerb = document.getElementById('fx-verb');
         if (btnVerb) btnVerb.addEventListener('click', function () {
@@ -684,6 +1073,61 @@
             isDistortionOn = !isDistortionOn;
             this.classList.toggle('brightness-150');
             this.classList.toggle('scale-95');
+        });
+
+        // Keyboard Shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ignore if help modal is visible
+            if (!helpModal.classList.contains('pointer-events-none')) return;
+            // Ignore if typing in an input field
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            switch (e.code) {
+                case 'Space':
+                    e.preventDefault();
+                    btnPlay.click();
+                    break;
+                case 'Escape':
+                    btnClear.click();
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    tempo = Math.min(180, tempo + 5);
+                    document.getElementById('tempo-slider').value = tempo;
+                    document.getElementById('bpm-display').innerText = `${tempo} BPM`;
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    tempo = Math.max(60, tempo - 5);
+                    document.getElementById('tempo-slider').value = tempo;
+                    document.getElementById('bpm-display').innerText = `${tempo} BPM`;
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    globalDetune = Math.min(1200, globalDetune + 100);
+                    document.getElementById('pitch-slider').value = globalDetune;
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    globalDetune = Math.max(-1200, globalDetune - 100);
+                    document.getElementById('pitch-slider').value = globalDetune;
+                    break;
+                case 'Digit1':
+                    if (btnVerb) btnVerb.click();
+                    break;
+                case 'Digit2':
+                    if (btnFilter) btnFilter.click();
+                    break;
+                case 'Digit3':
+                    if (btnDelay) btnDelay.click();
+                    break;
+                case 'Digit4':
+                    if (btnDist) btnDist.click();
+                    break;
+                case 'KeyR':
+                    btnRecord.click();
+                    break;
+            }
         });
 
         // Loop Start

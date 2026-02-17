@@ -1,29 +1,52 @@
-@import url('https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@400;700;900&display=swap');
 
 :root {
-    --void-bg: #2a1b3d;
-    --wood-dark: #3e2723;
-    --wood-light: #5d4037;
-    --parchment: #f3e5ab;
-    --parchment-shadow: #d7c9a3;
-    --gold: #ffc107;
-    --gold-shadow: #ff8f00;
-    --gem-red: #e53935;
-    --gem-blue: #039be5;
-    --gem-purple: #8e24aa;
-    --rune-glow: #00e5ff;
+    --bg-void: #0f172a;
+    --bg-panel: rgba(30, 41, 59, 0.7);
+    --bg-panel-hover: rgba(51, 65, 85, 0.8);
+
+    --accent-primary: #06b6d4;
+    /* Cyan */
+    --accent-secondary: #8b5cf6;
+    /* Violet */
+    --accent-success: #10b981;
+    /* Emerald */
+    --accent-danger: #ef4444;
+    /* Red */
+    --accent-warn: #f59e0b;
+    /* Amber */
+
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+
+    --glow-primary: 0 0 15px rgba(6, 182, 212, 0.5);
+    --glow-secondary: 0 0 15px rgba(139, 92, 246, 0.5);
+
+    --font-display: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+
+    --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 body {
-    background: var(--void-bg);
+    background: var(--bg-void);
     background-image:
-        radial-gradient(circle at 15% 50%, rgba(75, 0, 130, 0.4) 0%, transparent 50%),
-        radial-gradient(circle at 85% 30%, rgba(0, 50, 200, 0.2) 0%, transparent 50%);
-    color: #3e2723;
-    font-family: 'MedievalSharp', cursive;
+        radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 40%);
+    color: var(--text-main);
+    font-family: var(--font-body);
     min-height: 100vh;
     overflow-x: hidden;
-    cursor: url('https://cdn.custom-cursor.com/db/cursor/32/Fantasy_Cursor.png'), auto;
+}
+
+/* Typography Utilities */
+.font-display {
+    font-family: var(--font-display);
+}
+
+.font-body {
+    font-family: var(--font-body);
 }
 
 /* --- Magical Background --- */
@@ -39,9 +62,9 @@ body {
     position: absolute;
     background: radial-gradient(white, rgba(255, 255, 255, 0));
     border-radius: 50%;
-    opacity: 0.6;
-    animation: floatMagic 8s infinite ease-in-out;
-    filter: drop-shadow(0 0 5px var(--rune-glow));
+    opacity: 0.4;
+    animation: floatMagic 10s infinite ease-in-out;
+    filter: drop-shadow(0 0 2px var(--accent-primary));
 }
 
 @keyframes floatMagic {
@@ -51,7 +74,7 @@ body {
     }
 
     50% {
-        opacity: 0.8;
+        opacity: 0.6;
     }
 
     100% {
@@ -60,219 +83,308 @@ body {
     }
 }
 
-/* --- Containers --- */
+/* --- Components --- */
 
-/* The main "Board" or Tabletop feel */
+/* Glassmorphism Card */
 .playful-card {
-    background: var(--parchment);
-    border: 4px solid var(--wood-light);
-    border-radius: 8px;
-    /* Slightly rounded, worn edges */
-    box-shadow:
-        inset 0 0 60px rgba(62, 39, 35, 0.2),
-        /* Age stain */
-        5px 5px 15px rgba(0, 0, 0, 0.5);
-    /* Drop shadow */
-    position: relative;
-    padding: 2px;
+    background: var(--bg-panel);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
+    color: var(--text-main);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Corner decorations (simulated with pseudo-elements for gold aesthetic) */
+.playful-card:hover {
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Remove old corner bolts */
 .playful-card::before,
 .playful-card::after {
-    content: '';
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    background: var(--gold);
-    border: 1px solid var(--wood-dark);
-    box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    /* Bolts/Nails */
-    z-index: 2;
+    display: none;
 }
 
-.playful-card::before {
-    top: 8px;
-    left: 8px;
-}
-
-.playful-card::after {
-    top: 8px;
-    right: 8px;
-}
-
-/* --- Typography --- */
-.title-text {
-    font-family: 'Cinzel', serif;
-    font-weight: 700;
-    color: var(--gold);
-    text-shadow:
-        2px 2px 0px #000,
-        0 0 20px rgba(255, 193, 7, 0.6);
-    letter-spacing: 0.1em;
-}
-
+/* Titles */
+h1,
 h2,
-h3 {
-    color: var(--wood-dark);
-    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+h3,
+h4,
+.title-text {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
 }
 
-/* --- Buttons (RPG Style) --- */
+.title-text {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: none;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* --- Buttons --- */
 .rpg-btn {
-    background: linear-gradient(to bottom, #d7ccc8, #a1887f);
-    border: 2px solid var(--wood-dark);
-    border-radius: 4px;
-    color: var(--wood-dark);
-    font-family: 'MedievalSharp', cursive;
+    border: none;
+    border-radius: 12px;
+    font-family: var(--font-display);
+    font-weight: 700;
     text-transform: uppercase;
-    font-weight: bold;
-    box-shadow:
-        inset 1px 1px 0px rgba(255, 255, 255, 0.4),
-        0 4px 0px var(--wood-dark),
-        0 5px 5px rgba(0, 0, 0, 0.3);
-    transition: all 0.1s;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.rpg-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    filter: brightness(1.2);
+}
+
+.rpg-btn:active {
+    transform: translateY(0);
+}
+
+/* Variants */
+.rpg-btn-green {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39);
+}
+
+.rpg-btn-red {
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+    box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.39);
+}
+
+.rpg-btn-blue {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.39);
+}
+
+/* FX Buttons (Glassy Gems) */
+.gem-btn {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(4px);
+    color: var(--text-muted);
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
 }
 
-.rpg-btn:active {
-    transform: translateY(4px);
-    box-shadow: 0 0 0 var(--wood-dark);
+.gem-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s;
 }
 
-.rpg-btn-red {
-    background: linear-gradient(to bottom, #ffcdd2, #ef9a9a);
-    color: #b71c1c;
-}
-
-.rpg-btn-green {
-    background: linear-gradient(to bottom, #c8e6c9, #a5d6a7);
-    color: #1b5e20;
-}
-
-.rpg-btn-blue {
-    background: linear-gradient(to bottom, #b3e5fc, #81d4fa);
-    color: #01579b;
-}
-
-/* Gem Buttons for FX */
-.gem-btn {
-    border: 2px solid rgba(0, 0, 0, 0.3);
-    border-radius: 12px;
+.gem-btn:hover {
     color: white;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-    box-shadow:
-        inset 0 0 10px rgba(0, 0, 0, 0.5),
-        inset 0 2px 4px rgba(255, 255, 255, 0.6),
-        /* Shine */
-        0 4px 6px rgba(0, 0, 0, 0.3);
-    transition: all 0.1s;
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
 }
 
-.gem-btn:active {
-    transform: scale(0.95);
-    opacity: 0.9;
+.gem-btn:hover::before {
+    transform: translateX(100%);
 }
 
-/* --- Rune Grid --- */
+/* Active FX States (These classes are toggled by JS logic, usually inline styles or 'active' class effectively) */
+/* We need to ensure the JS logic toggles classes or we use the specific ID styles */
+/* The HTML uses inline styles/classes or just standard buttons. 
+   Wait, the JS sets styles? No, it just calls `btn.click()`.
+   Actually, the HTML has specific colors hardcoded in classes. Let's override or use those.
+   The JS toggles functionality, visuals are handled by the class on the element.
+   Let's make sure the ID selectors in HTML work nicely.
+*/
+
+#fx-verb {
+    background: linear-gradient(145deg, rgba(88, 28, 135, 0.2), rgba(107, 33, 168, 0.1));
+}
+
+#fx-verb.active,
+#fx-verb:active {
+    background: linear-gradient(145deg, #9333ea, #7e22ce);
+    color: white;
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.4);
+}
+
+#fx-filter {
+    background: linear-gradient(145deg, rgba(30, 64, 175, 0.2), rgba(29, 78, 216, 0.1));
+}
+
+#fx-filter.active,
+#fx-filter:active {
+    background: linear-gradient(145deg, #2563eb, #1d4ed8);
+    color: white;
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
+}
+
+#fx-delay {
+    background: linear-gradient(145deg, rgba(13, 148, 136, 0.2), rgba(15, 118, 110, 0.1));
+}
+
+#fx-delay.active,
+#fx-delay:active {
+    background: linear-gradient(145deg, #14b8a6, #0f766e);
+    color: white;
+    box-shadow: 0 0 20px rgba(20, 184, 166, 0.4);
+}
+
+#fx-dist {
+    background: linear-gradient(145deg, rgba(185, 28, 28, 0.2), rgba(153, 27, 27, 0.1));
+}
+
+#fx-dist.active,
+#fx-dist:active {
+    background: linear-gradient(145deg, #ef4444, #b91c1c);
+    color: white;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+
+/* --- Rune Grid (Sequencer) --- */
 .rune-stone {
-    background: #5d4037;
-    /* Dark stone/wood */
-    border: 2px solid #3e2723;
-    border-radius: 4px;
-    position: relative;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.8);
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: all 0.1s;
+    color: var(--text-muted);
+    font-family: var(--font-display);
+    /* Hide rune text visually until hover/active if we want cleaner look? 
+       Or make it subtle. The JS puts rune chars. Let's keep them subtle. 
+    */
+    font-size: 12px;
 }
 
-/* Active Rune = Glowing Gem */
+.rune-stone:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-main);
+}
+
 .rune-stone.active {
-    background: radial-gradient(circle at 30% 30%, var(--gold), #ff6f00);
-    border-color: #ffd54f;
-    box-shadow:
-        0 0 10px var(--gold),
-        inset 2px 2px 5px rgba(255, 255, 255, 0.8);
-    transform: scale(1.1);
+    background: var(--accent-primary);
+    border-color: #67e8f9;
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
+    color: #fff;
+    transform: scale(1.05);
     z-index: 10;
 }
 
 .rune-stone.playing {
-    filter: brightness(1.5) contrast(1.2);
-    transform: scale(1.2);
+    background: #fff !important;
+    box-shadow: 0 0 20px #fff;
+    transform: scale(1.15);
+    z-index: 20;
 }
 
 .beat-marker {
-    background: #4e342e;
+    background: rgba(30, 41, 59, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Labels */
+/* Row Labels */
 .row-label {
-    font-size: 0.7rem;
-    color: var(--wood-dark);
-    font-weight: bold;
-    opacity: 0.8;
+    font-family: var(--font-display);
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    text-shadow: none;
 }
 
-/* --- Sliders (Mana Bars) --- */
+/* --- Sliders --- */
 input[type=range] {
     -webkit-appearance: none;
     background: transparent;
+    width: 100%;
 }
 
 input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
-    height: 10px;
-    background: #3e2723;
-    border-radius: 5px;
-    border: 1px solid #5d4037;
-    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.8);
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    border: none;
 }
 
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    height: 20px;
-    width: 20px;
-    background: var(--gold);
-    border: 2px solid #fff;
+    appearance: none;
+    height: 16px;
+    width: 16px;
     border-radius: 50%;
-    margin-top: -6px;
-    box-shadow: 0 0 5px var(--gold);
+    margin-top: -5px;
+    background: var(--accent-secondary);
+    border: 2px solid #fff;
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
     cursor: pointer;
+    transition: transform 0.1s;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
 }
 
 /* --- Visualizer Frame --- */
 .orb-glow {
-    border: 6px solid var(--wood-light);
-    border-radius: 50% / 10%;
-    /* Elliptical or just rounded box? Let's do rounded box with "Crystal" feel */
-    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
     background: #000;
-    box-shadow:
-        0 0 15px rgba(0, 229, 255, 0.3),
-        inset 0 0 30px rgba(0, 0, 0, 0.9);
+    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8);
     position: relative;
     overflow: hidden;
 }
 
 /* --- Scrollbar --- */
 ::-webkit-scrollbar {
-    width: 12px;
+    width: 8px;
+    height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--wood-dark);
+    background: rgba(0, 0, 0, 0.2);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--gold);
-    border: 2px solid var(--wood-dark);
-    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 
 /* --- Modal --- */
 .modal-bg {
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.5);
+}
+
+
+
+/* Pattern Tabs Override */
+#pattern-tabs button {
+    font-family: var(--font-display) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s !important;
+}
+
+
+
+#chain-editor span {
+    font-family: var(--font-display) !important;
+    border-radius: 4px !important;
 }
