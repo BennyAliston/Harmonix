@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harmonix DAW</title>
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/tailwind.css"> <!-- Assuming tailwind is available or we use CDN if not -->
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body
+    class="bg-[#121214] text-gray-300 h-screen w-screen overflow-hidden flex flex-col font-sans selection:bg-cyan-900 selection:text-cyan-100">
+
+    <!-- Top Bar -->
+    <header class="h-12 border-b border-[#2a2a2e] flex items-center px-4 justify-between bg-[#1a1a1d] shrink-0">
+        <div class="flex items-center gap-4">
+            <h1 class="text-cyan-500 font-bold tracking-tight text-lg">HARMONIX <span
+                    class="text-gray-600 text-xs font-normal">STUDIO</span></h1>
+
+            <!-- Transport -->
+            <div class="flex items-center gap-2 bg-[#000] p-1 rounded">
+                <button id="btn-play"
+                    class="w-20 px-3 py-1 bg-[#2a2a2e] hover:bg-gray-600 rounded text-xs font-bold text-white transition-colors">PLAY</button>
+                <button id="btn-record"
+                    class="w-20 px-3 py-1 bg-[#2a2a2e] hover:bg-red-900/50 hover:text-red-400 rounded text-xs font-bold text-gray-400 transition-colors">SAVE</button>
+                <button id="btn-clear"
+                    class="px-3 py-1 bg-[#2a2a2e] hover:bg-gray-600 rounded text-xs font-bold text-gray-400 transition-colors">CLEAR</button>
+            </div>
+
+            <!-- Tempo -->
+            <div class="flex items-center gap-2 ml-4">
+                <span class="text-xs font-mono text-cyan-400" id="bpm-display">120 BPM</span>
+                <input type="range" id="tempo-slider" min="60" max="200" value="120"
+                    class="w-24 h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4 text-xs">
+            <div class="flex gap-2">
+                <div class="px-2 py-1 rounded bg-[#2a2a2e] text-green-400">CPU: 4%</div>
+                <div class="px-2 py-1 rounded bg-[#2a2a2e] text-blue-400">MEM: 120MB</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 flex overflow-hidden">
+
+        <!-- Sidebar (Browser/Properties) -->
+        <aside class="w-64 border-r border-[#2a2a2e] bg-[#1a1a1d] flex flex-col">
+            <div class="p-3 border-b border-[#2a2a2e] text-xs font-bold text-gray-500">PROJECT</div>
+            <div class="p-2 space-y-1 overflow-y-auto flex-1 text-sm">
+                <div class="p-2 hover:bg-[#2a2a2e] rounded cursor-pointer text-cyan-100">Main Pattern</div>
+                <div class="p-2 hover:bg-[#2a2a2e] rounded cursor-pointer text-gray-500">Variation A</div>
+                <div class="p-2 hover:bg-[#2a2a2e] rounded cursor-pointer text-gray-500">Breakdown</div>
+            </div>
+
+            <!-- Effects Panel placeholder -->
+            <div class="h-1/2 border-t border-[#2a2a2e] flex flex-col">
+                <div class="p-3 border-b border-[#2a2a2e] text-xs font-bold text-gray-500">EFFECTS</div>
+                <div class="p-4 grid grid-cols-2 gap-2">
+                    <button id="fx-verb"
+                        class="p-2 bg-[#2a2a2e] rounded border border-transparent hover:border-cyan-500/50 text-xs text-gray-400">REVERB</button>
+                    <button id="fx-delay"
+                        class="p-2 bg-[#2a2a2e] rounded border border-transparent hover:border-cyan-500/50 text-xs text-gray-400">DELAY</button>
+                    <button id="fx-dist"
+                        class="p-2 bg-[#2a2a2e] rounded border border-transparent hover:border-red-500/50 text-xs text-gray-400">DIST</button>
+                    <button id="fx-filter"
+                        class="p-2 bg-[#2a2a2e] rounded border border-transparent hover:border-blue-500/50 text-xs text-gray-400">FILTER</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Sequencer Area -->
+        <div class="flex-1 flex flex-col bg-[#121214] relative">
+            <!-- Timeline Ruler -->
+            <div
+                class="h-8 border-b border-[#2a2a2e] bg-[#1a1a1d] flex items-end px-4 pb-1 text-[10px] text-gray-500 font-mono tracking-widest pl-[100px]">
+                <div class="flex-1 flex justify-between">
+                    <span>1</span><span>2</span><span>3</span><span>4</span>
+                </div>
+            </div>
+
+            <!-- Grid Content -->
+            <div class="flex-1 p-4 overflow-auto scrollbar-thin">
+                <div id="sequencer-grid" class="w-full max-w-5xl">
+                    <!-- Grid Injected Here via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel (Mixer/Visualizer) -->
+        <aside class="w-72 border-l border-[#2a2a2e] bg-[#1a1a1d] flex flex-col">
+            <div class="h-48 bg-black relative border-b border-[#2a2a2e]">
+                <!-- Canvas for Visualizer -->
+                <canvas id="viz-canvas" class="w-full h-full opacity-80"></canvas>
+                <div class="absolute top-2 left-2 text-[10px] text-gray-600 font-mono">MASTER OUT</div>
+            </div>
+
+            <div class="flex-1 flex flex-col p-4 overflow-y-auto">
+                <div class="text-xs font-bold text-gray-500 mb-4">MIXER</div>
+                <div class="space-y-4">
+                    <!-- Mixer Strips -->
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-[10px] text-gray-500"><span>MELODY</span> <span
+                                class="text-cyan-400">-6.0dB</span></div>
+                        <input type="range" id="vol-melody"
+                            class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-cyan-500">
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-[10px] text-gray-500"><span>BASS</span> <span
+                                class="text-purple-400">-3.2dB</span></div>
+                        <input type="range" id="vol-bass"
+                            class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500">
+                    </div>
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-[10px] text-gray-500"><span>DRUMS</span> <span
+                                class="text-green-400">-1.0dB</span></div>
+                        <input type="range" id="vol-kick"
+                            class="w-full h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-green-500">
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
