@@ -1,6 +1,6 @@
 # HARMONIX 🎛️
 
-> *Retro Music Studio — compose beats, twist knobs, export tracks.*
+> *Retro Music Studio compose beats, twist knobs, export tracks.*
 
 Harmonix is a browser-based music production studio with a skeuomorphic rack-mount interface. It features a step sequencer, channel mixer, piano keyboard, and master effects all synthesized in real-time with the Web Audio API.
 
