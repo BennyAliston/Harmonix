@@ -4,311 +4,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Harmonix — Under Maintenance</title>
+    <title>HARMONIX — Retro Music Studio</title>
     <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --cyan: #22d3ee;
-            --purple: #a78bfa;
-            --pink: #f472b6;
-            --bg: #0d0d10;
-            --card: #16161a;
-            --border: #2a2a35;
-        }
-
-        body {
-            background: var(--bg);
-            color: #e2e8f0;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* ── Animated grid background ── */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(34,211,238,.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(34,211,238,.05) 1px, transparent 1px);
-            background-size: 40px 40px;
-            animation: gridScroll 20s linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes gridScroll {
-            from { background-position: 0 0; }
-            to   { background-position: 40px 40px; }
-        }
-
-        /* ── Floating blobs ── */
-        .blob {
-            position: fixed;
-            border-radius: 50%;
-            filter: blur(90px);
-            opacity: .18;
-            animation: blobFloat 8s ease-in-out infinite alternate;
-            pointer-events: none;
-        }
-        .blob-1 { width: 420px; height: 420px; background: var(--cyan);   top: -120px; left: -100px; animation-duration: 9s; }
-        .blob-2 { width: 360px; height: 360px; background: var(--purple); bottom: -80px; right: -80px; animation-duration: 11s; animation-delay: -3s; }
-        .blob-3 { width: 260px; height: 260px; background: var(--pink);   bottom: 20%;  left: 10%;   animation-duration: 13s; animation-delay: -6s; }
-
-        @keyframes blobFloat {
-            from { transform: translate(0, 0) scale(1); }
-            to   { transform: translate(30px, 20px) scale(1.08); }
-        }
-
-        /* ── Floating music notes ── */
-        .notes-layer { position: fixed; inset: 0; pointer-events: none; overflow: hidden; }
-        .note {
-            position: absolute;
-            font-size: 1.6rem;
-            opacity: 0;
-            animation: noteFloat linear infinite;
-        }
-        @keyframes noteFloat {
-            0%   { transform: translateY(0)   rotate(0deg);   opacity: 0; }
-            10%  { opacity: .55; }
-            90%  { opacity: .35; }
-            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
-        }
-
-        /* ── Card ── */
-        .card {
-            position: relative;
-            z-index: 10;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 3rem 3.5rem;
-            max-width: 640px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 0 0 1px rgba(34,211,238,.08), 0 32px 80px rgba(0,0,0,.6);
-            animation: cardIn .7s cubic-bezier(.22,1,.36,1) both;
-        }
-        @keyframes cardIn {
-            from { opacity: 0; transform: translateY(30px) scale(.97); }
-            to   { opacity: 1; transform: translateY(0)    scale(1);   }
-        }
-
-        /* ── Glowing top border ── */
-        .card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 24px;
-            padding: 1.5px;
-            background: linear-gradient(135deg, var(--cyan), var(--purple), var(--pink));
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: .6;
-            pointer-events: none;
-        }
-
-        /* ── Logo ── */
-        .logo {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem;
-            font-weight: 700;
-            letter-spacing: .25em;
-            color: var(--cyan);
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: .5rem;
-        }
-        .logo span { color: #4b5563; font-weight: 400; }
-
-        /* ── Emoji bounce ── */
-        .emoji-big {
-            font-size: 4.5rem;
-            display: block;
-            margin-bottom: 1.25rem;
-            animation: wobble 2.4s ease-in-out infinite;
-        }
-        @keyframes wobble {
-            0%,100% { transform: rotate(-6deg) scale(1);    }
-            50%      { transform: rotate( 6deg) scale(1.12); }
-        }
-
-        /* ── Heading ── */
-        h1 {
-            font-size: clamp(1.5rem, 4vw, 2.1rem);
-            font-weight: 900;
-            line-height: 1.2;
-            background: linear-gradient(135deg, var(--cyan) 0%, var(--purple) 60%, var(--pink) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 1.25rem;
-        }
-
-        /* ── Body text ── */
-        p {
-            color: #94a3b8;
-            font-size: 1.05rem;
-            line-height: 1.7;
-            margin-bottom: 1rem;
-        }
-        p strong { color: #e2e8f0; }
-
-        /* ── Divider ── */
-        .divider {
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border), transparent);
-            margin: 2rem 0;
-        }
-
-        /* ── Status bar ── */
-        .status-bar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: .6rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: .78rem;
-            color: #4b5563;
-        }
-        .status-dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: #f59e0b;
-            animation: pulse 1.8s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,.5); }
-            50%      { box-shadow: 0 0 0 6px rgba(245,158,11,0); }
-        }
-
-        /* ── Equaliser bars ── */
-        .eq {
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            gap: 4px;
-            height: 36px;
-            margin-top: 2rem;
-        }
-        .eq-bar {
-            width: 6px;
-            border-radius: 3px 3px 0 0;
-            animation: eqDance .8s ease-in-out infinite alternate;
-        }
-        .eq-bar:nth-child(1)  { background: var(--cyan);   height: 40%; animation-delay: 0s;    animation-duration: .7s; }
-        .eq-bar:nth-child(2)  { background: var(--cyan);   height: 70%; animation-delay: .1s;   animation-duration: .9s; }
-        .eq-bar:nth-child(3)  { background: var(--purple); height: 90%; animation-delay: .05s;  animation-duration: .6s; }
-        .eq-bar:nth-child(4)  { background: var(--purple); height: 55%; animation-delay: .2s;   animation-duration: 1s; }
-        .eq-bar:nth-child(5)  { background: var(--pink);   height: 80%; animation-delay: .15s;  animation-duration: .75s; }
-        .eq-bar:nth-child(6)  { background: var(--pink);   height: 45%; animation-delay: .3s;   animation-duration: .85s; }
-        .eq-bar:nth-child(7)  { background: var(--purple); height: 65%; animation-delay: .08s;  animation-duration: .95s; }
-        .eq-bar:nth-child(8)  { background: var(--cyan);   height: 30%; animation-delay: .25s;  animation-duration: .68s; }
-
-        @keyframes eqDance {
-            from { transform: scaleY(1); }
-            to   { transform: scaleY(.2); }
-        }
-
-        .eq-label {
-            text-align: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: .65rem;
-            color: #374151;
-            letter-spacing: .15em;
-            margin-top: .5rem;
-        }
-    </style>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Mono:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <!-- Background blobs -->
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
+    <div class="rack-frame">
 
-    <!-- Floating music notes (injected by JS) -->
-    <div class="notes-layer" id="notes-layer"></div>
+        <!-- ════════ HEADER + NAV ════════ -->
+        <div class="rack-unit">
+            <div class="rack-screw tl"></div>
+            <div class="rack-screw tr"></div>
 
-    <!-- Main card -->
-    <div class="card">
+            <div class="header-top">
+                <h1 class="logo">HARMONIX</h1>
+                <span class="version-badge">RETRO MUSIC STUDIO v3.0</span>
+            </div>
+            <nav class="rack-nav">
+                <button class="nav-tab active" data-page="sequencer">
+                    <span class="nav-led"></span> SEQUENCER
+                </button>
+                <button class="nav-tab" data-page="mixer">
+                    <span class="nav-led"></span> MIXER
+                </button>
+                <button class="nav-tab" data-page="keys">
+                    <span class="nav-led"></span> KEYS
+                </button>
+                <button class="nav-tab" data-page="effects">
+                    <span class="nav-led"></span> EFFECTS
+                </button>
+            </nav>
 
-        <div class="logo">
-            HARMONIX <span>STUDIO</span>
+            <div class="rack-screw bl"></div>
+            <div class="rack-screw br"></div>
         </div>
 
-        <span class="emoji-big">🎛️</span>
+        <!-- ════════ TRANSPORT + OSCILLOSCOPE ════════ -->
+        <div class="rack-unit">
+            <div class="rack-screw tl"></div>
+            <div class="rack-screw tr"></div>
 
-        <h1>Oops, I pressed the wrong button.</h1>
+            <div class="transport-row">
+                <button class="rack-btn" id="btn-play" data-tooltip="Start sequencer playback (Space)">
+                    <span class="btn-led"></span> &#9654; PLAY
+                </button>
+                <button class="rack-btn active" id="btn-stop" data-tooltip="Stop playback and reset (Space)">
+                    <span class="btn-led"></span> &#9632; STOP
+                </button>
+                <button class="rack-btn" id="btn-loop" data-tooltip="Toggle pattern looping">
+                    <span class="btn-led"></span> &#10227; LOOP
+                </button>
+                <div class="bpm-group" data-tooltip="Tempo in beats per minute">
+                    <label>BPM</label>
+                    <input type="range" id="bpm-slider" min="60" max="180" value="120" style="width:120px;">
+                    <div class="seg-display" id="bpm-display">120</div>
+                </div>
+                <div class="bpm-group" data-tooltip="Swing feel (0% = straight)">
+                    <label>SWING</label>
+                    <input type="range" id="swing-slider" min="0" max="100" value="0" style="width:80px;">
+                    <div class="seg-display" id="swing-display" style="min-width:34px;">0%</div>
+                </div>
+            </div>
 
-        <p>
-            I made a mistake while trying to make some UI changes,
-            the studio doesn't look quite right at the moment.
-        </p>
-        <p>
-            <strong>I'm actively working on a fix.</strong><br>
-            Harmonix will be back in maintenance for a little while. Sit tight! 🎶
-        </p>
+            <div class="oscilloscope-wrap">
+                <div id="oscilloscope"></div>
+                <div class="scanlines"></div>
+                <div class="crt-glow"></div>
+            </div>
 
-        <div class="divider"></div>
-
-        <div class="status-bar">
-            <div class="status-dot"></div>
-            MAINTENANCE IN PROGRESS · HANG TIGHT
+            <div class="rack-screw bl"></div>
+            <div class="rack-screw br"></div>
         </div>
 
-        <!-- Animated equaliser -->
-        <div class="eq">
-            <div class="eq-bar"></div>
-            <div class="eq-bar"></div>
-            <div class="eq-bar"></div>
-            <div class="eq-bar"></div>
-            <div class="eq-bar"></div>
-            <div class="eq-bar"></div>
-            <div class="eq-bar"></div>
-            <div class="eq-bar"></div>
+        <!-- ════════ PAGE: SEQUENCER ════════ -->
+        <div id="page-sequencer" class="page active">
+            <div class="rack-unit">
+                <div class="rack-screw tl"></div>
+                <div class="rack-screw tr"></div>
+
+                <div class="module-header">
+                    <span class="module-title">STEP SEQUENCER</span>
+                    <div class="module-controls">
+                        <div class="select-group">
+                            <label>PRESET</label>
+                            <select id="preset-dropdown" class="rack-select"></select>
+                        </div>
+                        <button id="btn-clear" class="rack-btn small" data-tooltip="Clear all steps">CLEAR</button>
+                        <button id="btn-random" class="rack-btn small" data-tooltip="Randomize pattern">RANDOM</button>
+                    </div>
+                </div>
+                <div class="neon-sep"></div>
+                <div id="sequencer-container" style="overflow-x:auto;"></div>
+
+                <div class="rack-screw bl"></div>
+                <div class="rack-screw br"></div>
+            </div>
         </div>
-        <div class="eq-label">SIGNAL PROCESSING . . .</div>
+
+        <!-- ════════ PAGE: MIXER ════════ -->
+        <div id="page-mixer" class="page">
+            <div class="rack-unit">
+                <div class="rack-screw tl"></div>
+                <div class="rack-screw tr"></div>
+
+                <div class="module-header">
+                    <span class="module-title">CHANNEL MIXER</span>
+                </div>
+                <div class="neon-sep"></div>
+                <div id="mixer-container" class="mixer-container"></div>
+
+                <div class="rack-screw bl"></div>
+                <div class="rack-screw br"></div>
+            </div>
+        </div>
+
+        <!-- ════════ PAGE: KEYS ════════ -->
+        <div id="page-keys" class="page">
+            <div class="rack-unit">
+                <div class="rack-screw tl"></div>
+                <div class="rack-screw tr"></div>
+
+                <div class="module-header">
+                    <span class="module-title">KEYBOARD</span>
+                    <div class="module-controls">
+                        <div class="select-group">
+                            <label>KEY</label>
+                            <select id="key-dropdown" class="rack-select"></select>
+                        </div>
+                        <div class="select-group">
+                            <label>SCALE</label>
+                            <select id="scale-dropdown" class="rack-select"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="neon-sep"></div>
+                <div class="keyboard-scroll">
+                    <div class="keyboard" id="keyboard"></div>
+                </div>
+
+                <div class="rack-screw bl"></div>
+                <div class="rack-screw br"></div>
+            </div>
+        </div>
+
+        <!-- ════════ PAGE: EFFECTS ════════ -->
+        <div id="page-effects" class="page">
+            <div class="rack-unit">
+                <div class="rack-screw tl"></div>
+                <div class="rack-screw tr"></div>
+
+                <div class="module-header">
+                    <span class="module-title">MASTER EFFECTS</span>
+                </div>
+                <div class="neon-sep"></div>
+                <div id="effects-row" class="effects-row"></div>
+
+                <div class="rack-screw bl"></div>
+                <div class="rack-screw br"></div>
+            </div>
+
+            <div class="rack-unit">
+                <div class="rack-screw tl"></div>
+                <div class="rack-screw tr"></div>
+
+                <div class="module-header">
+                    <span class="module-title">EXPORT</span>
+                </div>
+                <div class="neon-sep"></div>
+                <div class="export-controls">
+                    <button id="btn-export" class="rack-btn export-btn"
+                        data-tooltip="Record one loop and export as WAV file">
+                        <span class="rec-led"></span> RECORD &amp; EXPORT WAV
+                    </button>
+                    <div class="seg-display export-status" id="export-status">READY</div>
+                </div>
+
+                <div class="rack-screw bl"></div>
+                <div class="rack-screw br"></div>
+            </div>
+        </div>
 
     </div>
 
-    <script>
-        // Spawn floating musical notes
-        const notes = ['♩','♪','♫','♬','🎵','🎶'];
-        const layer = document.getElementById('notes-layer');
-        for (let i = 0; i < 22; i++) {
-            const el = document.createElement('span');
-            el.classList.add('note');
-            el.textContent = notes[Math.floor(Math.random() * notes.length)];
-            const size   = 1.2 + Math.random() * 1.6;
-            const left   = Math.random() * 100;
-            const delay  = Math.random() * 18;
-            const dur    = 10 + Math.random() * 14;
-            el.style.cssText = `
-                left: ${left}%;
-                bottom: -80px;
-                font-size: ${size}rem;
-                animation-duration: ${dur}s;
-                animation-delay: ${delay}s;
-                color: hsl(${170 + Math.random()*120}, 80%, 70%);
-            `;
-            layer.appendChild(el);
-        }
-    </script>
-
+    <script src="js/poweraudio.js"></script>
+    <script src="js/harmonix-engine.js"></script>
+    <script src="js/harmonix-ui.js"></script>
+    <script src="js/harmonix-app.js"></script>
 </body>
+
 </html>
