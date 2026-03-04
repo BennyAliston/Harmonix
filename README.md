@@ -2,7 +2,7 @@
 
 > *Retro Music Studio — compose beats, twist knobs, export tracks.*
 
-Harmonix is a browser-based music production studio with a skeuomorphic rack-mount interface. It features a step sequencer, channel mixer, piano keyboard, and master effects — all synthesized in real-time with the Web Audio API.
+Harmonix is a browser-based music production studio with a skeuomorphic rack-mount interface. It features a step sequencer, channel mixer, piano keyboard, and master effects all synthesized in real-time with the Web Audio API.
 
 ## ✨ Features
 
@@ -34,7 +34,7 @@ Harmonix is a browser-based music production studio with a skeuomorphic rack-mou
 ## 📜 Credits & Attribution
 
 ### Visualizer Engine
-https://www.cssscript.com/innovative-audio-visualizer-power/ — used for the oscilloscope visualizer.
+https://www.cssscript.com/innovative-audio-visualizer-power/ used for the oscilloscope visualizer.
 > **Note**: `poweraudio.js` is a third-party library and is **not** created by the author of this project.
 
 ## 🚀 How to Run
@@ -42,3 +42,5 @@ https://www.cssscript.com/innovative-audio-visualizer-power/ — used for the os
 1. Clone the repository.
 2. Open `index.html` in any modern web browser.
 3. Click **PLAY** or press **Space** to start the sequencer.
+
+## Live - www.harmonix.rocks
